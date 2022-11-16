@@ -26,6 +26,5 @@ class ArticleFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.tvTitle.text = articleRepository.getRandomArticle().title
         binding.tvExtract.text = articleRepository.getRandomArticle().extract
-        println(articleRepository.getRandomArticle())
     }
 }
