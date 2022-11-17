@@ -31,7 +31,7 @@ class ArticleListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentArticleListBinding.inflate(inflater, container, false)
-        repeat(10){
+        repeat(10) {
             listOfArticles.add(articleRepository.getRandomArticle())
         }
         articleViewModel.articleModel.observe(this, Observer { listInViewModel ->
