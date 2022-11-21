@@ -4,12 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:id="@+id/ivItemImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        tools:src = "@drawable/logo"/>
+
     <TextView
         android:id="@+id/tvTitulo"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAlignment="center"
         android:clickable="true"
         android:textSize="20sp"
+        android:layout_marginLeft="75dp"
         tools:text="Titulo del articulo"
         android:focusable="true" />
     

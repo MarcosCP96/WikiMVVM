@@ -36,11 +36,7 @@ class ArticleListFragment : Fragment() {
         binding.articleList.layoutManager = LinearLayoutManager(this.context)
         binding.articleList.adapter =
             ArticleAdapter(listOfArticles, parentFragmentManager) {
-                val article = ArticleFragment().apply { arguments = Bundle().apply { putSerializable("articulo", it) } }
-//                articleViewModel.getArticle(it)
-//                val toTargetBTransaction = parentFragmentManager.beginTransaction()
-//                toTargetBTransaction.replace(R.id.placeholder, article, "articleFragment")
-//                    .commit()
+                ArticleFragment().apply { arguments = Bundle().apply { putSerializable("articulo", it) } }
             }
 
         articleViewModel.articleModel.observe(viewLifecycleOwner, Observer { listInViewModel ->
@@ -53,11 +49,6 @@ class ArticleListFragment : Fragment() {
         binding.randomButton.setOnClickListener {
             articleViewModel.newRandomListOfArticles()
             binding.articleList.adapter = ArticleAdapter(listOfArticles, parentFragmentManager) {
-//                articleViewModel.getArticle(it)
-//                val article = ArticleFragment().apply { arguments = Bundle().apply { putSerializable("articulo", it) } }
-//                val toTargetBTransaction = parentFragmentManager.beginTransaction()
-//                toTargetBTransaction.replace(R.id.placeholder, article, "articleFragment")
-//                    .commit()
             }
         }
         return binding.root

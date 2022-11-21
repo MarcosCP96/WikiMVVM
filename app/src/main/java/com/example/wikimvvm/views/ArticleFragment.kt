@@ -34,11 +34,9 @@ class ArticleFragment : Fragment() {
         arguments?.getSerializable("articulo").let {
             articleSent = it as ArticleResponse
         }
-
         binding.tvTitle.text = articleSent.title
         binding.tvExtract.text = articleSent.extract
         Glide.with(this).load(articleSent.thumbnail.source).into(binding.ivImage)
-
         binding.backToMenuButton.setOnClickListener {
             val toTargetBTransaction = parentFragmentManager.beginTransaction()
             toTargetBTransaction.replace(R.id.placeholder, ArticleListFragment(), "articleFragment")
