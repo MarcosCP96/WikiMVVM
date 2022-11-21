@@ -16,8 +16,8 @@ class ArticleViewModel: ViewModel() {
         repeat(10){
             val randomArticle = articleRepository.getRandomArticle()
             viewModelListOfArticles.add(randomArticle)
-            articleModel.postValue(viewModelListOfArticles)
         }
+        articleModel.postValue(viewModelListOfArticles)
     }
 
     fun getArticle(articleResponse: ArticleResponse){

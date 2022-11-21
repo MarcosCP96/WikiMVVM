@@ -6,6 +6,7 @@ import com.example.wikimvvm.model.Thumbnail
 import kotlinx.coroutines.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.Thread.sleep
 
 object ArticleRepository {
     private fun getRetrofit(): Retrofit {
@@ -17,7 +18,7 @@ object ArticleRepository {
 
     fun getRandomArticle(): ArticleResponse {
         val randomArticle = ArticleResponse("", Thumbnail(""), "")
-        CoroutineScope(Dispatchers.IO).launch {
+        runBlocking {
             val call = getRetrofit().create(APIService::class.java).getRandomArticle()
             val article = call.body()
             randomArticle.title = article!!.title
