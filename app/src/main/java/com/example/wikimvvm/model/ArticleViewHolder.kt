@@ -9,14 +9,8 @@ import com.example.wikimvvm.R
 class ArticleViewHolder(view: View) : ViewHolder(view) {
     private val article = view.findViewById<TextView>(R.id.tvTitulo)
 
-    fun render(articleResponse: ArticleResponse) {
-        article.setOnClickListener {
-            Toast.makeText(
-                article.context,
-                articleResponse.title,
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+    fun render(articleResponse: ArticleResponse, onCLick: (articleResponse: ArticleResponse) -> Unit) {
         article.text = articleResponse.title
+        article.setOnClickListener { onCLick(articleResponse) }
     }
 }

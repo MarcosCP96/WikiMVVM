@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,45 +17,53 @@ import com.example.wikimvvm.model.ArticleAdapter
 import com.example.wikimvvm.model.ArticleResponse
 import com.example.wikimvvm.repository.ArticleRepository
 import com.example.wikimvvm.viewmodel.ArticleViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class ArticleListFragment : Fragment() {
-    private val articleRepository = ArticleRepository
     private var _binding: FragmentArticleListBinding? = null
     private val binding get() = _binding!!
     private val articleViewModel: ArticleViewModel by viewModels()
-
     private var listOfArticles = mutableListOf<ArticleResponse>()
 
-    @SuppressLint("FragmentLiveDataObserve")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentArticleListBinding.inflate(inflater, container, false)
-        repeat(10) {
-            listOfArticles.add(articleRepository.getRandomArticle())
-        }
-        articleViewModel.articleModel.observe(this, Observer { listInViewModel ->
+        binding.articleList.setHasFixedSize(true)
+        binding.articleList.layoutManager = LinearLayoutManager(this.context)
+        binding.articleList.adapter =
+            ArticleAdapter(listOfArticles, parentFragmentManager) {
+                val article = ArticleFragment().apply { arguments = Bundle().apply { putSerializable("articulo", it) } }
+//                articleViewModel.getArticle(it)
+//                val toTargetBTransaction = parentFragmentManager.beginTransaction()
+//                toTargetBTransaction.replace(R.id.placeholder, article, "articleFragment")
+//                    .commit()
+            }
+
+        articleViewModel.articleModel.observe(viewLifecycleOwner, Observer { listInViewModel ->
             listOfArticles.clear()
             listInViewModel.forEach { articleInViewModel ->
                 listOfArticles.add(articleInViewModel)
             }
         })
+
         binding.randomButton.setOnClickListener {
             articleViewModel.newRandomListOfArticles()
-            binding.articleList.adapter = ArticleAdapter(listOfArticles)
+            binding.articleList.adapter = ArticleAdapter(listOfArticles, parentFragmentManager) {
+//                articleViewModel.getArticle(it)
+//                val article = ArticleFragment().apply { arguments = Bundle().apply { putSerializable("articulo", it) } }
+//                val toTargetBTransaction = parentFragmentManager.beginTransaction()
+//                toTargetBTransaction.replace(R.id.placeholder, article, "articleFragment")
+//                    .commit()
+            }
         }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recyclerView = view.findViewById<RecyclerView>(R.id.articleList)
-        recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = LinearLayoutManager(this.context)
-        recyclerView.adapter = ArticleAdapter(listOfArticles)
     }
 }
-
-//        val view = inflater.inflate(R.layout.fragment_article_list, container, false)
-//        return view

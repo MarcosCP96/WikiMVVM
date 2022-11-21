@@ -16,8 +16,8 @@ object ArticleRepository {
     }
 
     fun getRandomArticle(): ArticleResponse {
-        var randomArticle = ArticleResponse("", Thumbnail(""), "")
-        runBlocking {
+        val randomArticle = ArticleResponse("", Thumbnail(""), "")
+        CoroutineScope(Dispatchers.IO).launch {
             val call = getRetrofit().create(APIService::class.java).getRandomArticle()
             val article = call.body()
             randomArticle.title = article!!.title

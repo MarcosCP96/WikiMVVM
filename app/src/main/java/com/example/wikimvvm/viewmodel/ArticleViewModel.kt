@@ -8,6 +8,7 @@ import com.example.wikimvvm.repository.ArticleRepository
 class ArticleViewModel: ViewModel() {
     private val articleRepository = ArticleRepository
     private val viewModelListOfArticles = mutableListOf<ArticleResponse>()
+    private val articleToSend = MutableLiveData<ArticleResponse>()
     val articleModel = MutableLiveData<MutableList<ArticleResponse>>()
 
     fun newRandomListOfArticles(){
@@ -17,5 +18,9 @@ class ArticleViewModel: ViewModel() {
             viewModelListOfArticles.add(randomArticle)
             articleModel.postValue(viewModelListOfArticles)
         }
+    }
+
+    fun getArticle(articleResponse: ArticleResponse){
+        articleToSend.postValue(articleResponse)
     }
 }

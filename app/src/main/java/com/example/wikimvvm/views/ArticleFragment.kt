@@ -1,41 +1,48 @@
 package com.example.wikimvvm.views
 
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.example.wikimvvm.R
 import com.example.wikimvvm.databinding.FragmentArticleBinding
-import com.example.wikimvvm.model.ArticleAdapter
 import com.example.wikimvvm.model.ArticleResponse
+import com.example.wikimvvm.model.Thumbnail
 import com.example.wikimvvm.repository.ArticleRepository
+import com.example.wikimvvm.viewmodel.ArticleViewModel
 
 
 class ArticleFragment : Fragment() {
-    private val articleRepository = ArticleRepository
-    private var _binding:FragmentArticleBinding? = null
+    private var _binding: FragmentArticleBinding? = null
     private val binding get() = _binding!!
+    private var articleSent = ArticleResponse("", Thumbnail(""),"")
 
-//    override fun onCreateView(
-//        inflater: LayoutInflater, container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View {
-//        _binding = FragmentArticleBinding.inflate(inflater, container, false)
-//        return binding.root
-//    }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentArticleBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val listOfArticles = mutableListOf<ArticleResponse>()
-        repeat(10){
-            listOfArticles.add(articleRepository.getRandomArticle())
+        arguments?.getSerializable("articulo").let {
+            articleSent = it as ArticleResponse
         }
-        initRecycler(listOfArticles)
-    }
-    private fun initRecycler(listOfArticles: MutableList<ArticleResponse>) {
-        val recyclerView = requireView().findViewById<RecyclerView>(R.id.articleList)
-        recyclerView.layoutManager = LinearLayoutManager(this.context)
-        recyclerView.adapter = ArticleAdapter(listOfArticles)
+
+        binding.tvTitle.text = articleSent.title
+        binding.tvExtract.text = articleSent.extract
+        Glide.with(this).load(articleSent.thumbnail.source).into(binding.ivImage)
+
+        binding.backToMenuButton.setOnClickListener {
+            val toTargetBTransaction = parentFragmentManager.beginTransaction()
+            toTargetBTransaction.replace(R.id.placeholder, ArticleListFragment(), "articleFragment")
+                .commit()
+        }
     }
 }
