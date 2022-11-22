@@ -16,6 +16,7 @@ import com.example.wikimvvm.R
 import com.example.wikimvvm.databinding.FragmentArticleListBinding
 import com.example.wikimvvm.model.ArticleAdapter
 import com.example.wikimvvm.model.ArticleResponse
+import com.example.wikimvvm.model.FavouriteArticle
 import com.example.wikimvvm.repository.ArticleRepository
 import com.example.wikimvvm.viewmodel.ArticleViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -48,8 +49,12 @@ class ArticleListFragment : Fragment() {
 
         binding.randomButton.setOnClickListener {
             articleViewModel.newRandomListOfArticles()
-//            binding.articleList.adapter = ArticleAdapter(listOfArticles, parentFragmentManager) {
-//            }
+        }
+
+        binding.toFavourites.setOnClickListener {
+            val toSaved = parentFragmentManager.beginTransaction()
+            toSaved.replace(R.id.placeholder, FavouriteArticlesFragment(), "articleFragment")
+                .commit()
         }
         return binding.root
     }

@@ -7,6 +7,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".views.ArticleListFragment">
 
+    <Button
+        android:id="@+id/toFavourites"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="200dp"
+        android:backgroundTint="@color/black"
+        android:text="saved articles"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/articleList" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/articleList"
         android:layout_width="match_parent"
@@ -18,8 +28,12 @@
         android:id="@+id/randomButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/black"
         android:text="get articles"
         app:layout_constraintTop_toBottomOf="@id/articleList"
         app:layout_constraintStart_toStartOf="parent"/>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

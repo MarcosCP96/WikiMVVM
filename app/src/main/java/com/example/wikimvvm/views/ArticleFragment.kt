@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.example.wikimvvm.R
 import com.example.wikimvvm.databinding.FragmentArticleBinding
 import com.example.wikimvvm.model.ArticleResponse
+import com.example.wikimvvm.model.FavouriteArticle
 import com.example.wikimvvm.model.Thumbnail
 import com.example.wikimvvm.repository.ArticleRepository
 import com.example.wikimvvm.viewmodel.ArticleViewModel
@@ -20,6 +21,7 @@ class ArticleFragment : Fragment() {
     private var _binding: FragmentArticleBinding? = null
     private val binding get() = _binding!!
     private var articleSent = ArticleResponse("", Thumbnail(""),"")
+    private val articleViewModel: ArticleViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +43,14 @@ class ArticleFragment : Fragment() {
             val toTargetBTransaction = parentFragmentManager.beginTransaction()
             toTargetBTransaction.replace(R.id.placeholder, ArticleListFragment(), "articleFragment")
                 .commit()
+        }
+
+        binding.addToFavouriteButton.setOnClickListener {
+            var favouriteArticle = FavouriteArticle("", Thumbnail(""),"")
+            arguments?.getSerializable("articulo").let {
+                favouriteArticle = it as FavouriteArticle
+            }
+            articleViewModel.insertFavouriteArticle(favouriteArticle)
         }
     }
 }
