@@ -2,10 +2,13 @@ package com.example.wikimvvm.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.wikimvvm.`interface`.ArticleDAO
+import com.example.wikimvvm.daos.ArticleDAO
 import com.example.wikimvvm.model.ArticleResponse
 import com.example.wikimvvm.model.FavouriteArticle
 import com.example.wikimvvm.repository.ArticleRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ArticleViewModel: ViewModel() {
     private val articleRepository = ArticleRepository
@@ -16,11 +19,13 @@ class ArticleViewModel: ViewModel() {
 
     fun newRandomListOfArticles(){
         viewModelListOfArticles.clear()
-        repeat(10){
-            val randomArticle = articleRepository.getRandomArticle()
-            viewModelListOfArticles.add(randomArticle)
+        CoroutineScope(Dispatchers.IO).launch {
+            repeat(10){
+                    val randomArticle = articleRepository.getRandomArticle()
+                    viewModelListOfArticles.add(randomArticle)
+            }
+            articleModel.postValue(viewModelListOfArticles)
         }
-        articleModel.postValue(viewModelListOfArticles)
     }
 
     fun receiveArticle(favouriteArticle: FavouriteArticle){

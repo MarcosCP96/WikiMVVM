@@ -1,4 +1,4 @@
-package com.example.wikimvvm.`interface`
+package com.example.wikimvvm.daos
 
 import com.example.wikimvvm.model.ArticleResponse
 import retrofit2.Response

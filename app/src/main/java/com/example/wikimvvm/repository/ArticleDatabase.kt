@@ -3,8 +3,7 @@ package com.example.wikimvvm.repository
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.wikimvvm.`interface`.ArticleDAO
-import com.example.wikimvvm.model.ArticleResponse
+import com.example.wikimvvm.daos.ArticleDAO
 import com.example.wikimvvm.model.ClassConverters
 import com.example.wikimvvm.model.FavouriteArticle
 

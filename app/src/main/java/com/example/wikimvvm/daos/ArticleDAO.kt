@@ -1,9 +1,8 @@
-package com.example.wikimvvm.`interface`
+package com.example.wikimvvm.daos
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.wikimvvm.model.ArticleResponse
 import com.example.wikimvvm.model.FavouriteArticle
 
 @Dao

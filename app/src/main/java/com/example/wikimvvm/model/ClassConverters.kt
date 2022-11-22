@@ -7,4 +7,9 @@ class ClassConverters {
     fun fromThumbnailToString(thumbnail: Thumbnail): String{
         return thumbnail.source
     }
+
+    @TypeConverter
+    fun fromStringToThumbnail(string: String): Thumbnail{
+        return Thumbnail(string)
+    }
 }

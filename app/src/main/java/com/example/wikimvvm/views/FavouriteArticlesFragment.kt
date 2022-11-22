@@ -25,11 +25,8 @@ class FavouriteArticlesFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentArticleListBinding.inflate(inflater, container, false)
+
         listOfFavouriteArticles = articleViewModel.getFavouriteArticles() as MutableList
-        listOfFavouriteArticles.forEach {
-            println(it)
-        }
         return binding.root
     }
-
 }
