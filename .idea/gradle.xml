@@ -9,8 +9,8 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="/dades/Marcos/M7-M8/AndroidStudioProjects/WikiMVVM" />
-            <option value="/dades/Marcos/M7-M8/AndroidStudioProjects/WikiMVVM/app" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -19,6 +19,6 @@ class MainActivity : AppCompatActivity() {
             applicationContext,
             ArticleDatabase::class.java, "articlesDB"
         ).build()
-        val articleDao = db.articleDao()
+        articleViewModel.receiveDAO(db.articleDao())
     }
 }

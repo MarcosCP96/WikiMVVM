@@ -1,26 +1,21 @@
 package com.example.wikimvvm.views
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.example.wikimvvm.R
 import com.example.wikimvvm.databinding.FragmentArticleListBinding
 import com.example.wikimvvm.model.ArticleAdapter
-import com.example.wikimvvm.model.ArticleResponse
-import com.example.wikimvvm.model.FavouriteArticle
-import com.example.wikimvvm.repository.ArticleRepository
+import com.example.wikimvvm.repository.ArticleDatabase
 import com.example.wikimvvm.viewmodel.ArticleViewModel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ArticleListFragment : Fragment() {
@@ -37,6 +32,13 @@ class ArticleListFragment : Fragment() {
 //        binding.articleList.setHasFixedSize(true)
         binding.articleList.layoutManager = LinearLayoutManager(this.context)
         articleViewModel.newRandomListOfArticles()
+
+//        val db = Room.databaseBuilder(
+//            requireContext(),
+//            ArticleDatabase::class.java, "articlesDB"
+//        ).build()
+//        val articleDao = db.articleDao()
+//        articleViewModel.receiveDAO(articleDao)
 
         val adapter = ArticleAdapter(parentFragmentManager) {
             ArticleFragment().apply { arguments = Bundle().apply { putSerializable("articulo", it) } }

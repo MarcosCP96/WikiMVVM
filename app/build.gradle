@@ -63,7 +63,7 @@ dependencies {
     testImplementation("androidx.room:room-testing:2.4.3")
 
     // optional - Paging 3 Integration
-    implementation("androidx.room:room-paging:2.5.0-beta02")
+    implementation("androidx.room:room-paging:2.4.3")
     implementation 'com.github.bumptech.glide:glide:4.14.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")

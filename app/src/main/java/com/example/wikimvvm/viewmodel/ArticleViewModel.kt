@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.wikimvvm.daos.ArticleDAO
 import com.example.wikimvvm.model.ArticleResponse
-import com.example.wikimvvm.model.FavouriteArticle
 import com.example.wikimvvm.repository.ArticleRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -13,9 +12,10 @@ import kotlinx.coroutines.launch
 class ArticleViewModel: ViewModel() {
     private val articleRepository = ArticleRepository
     private val viewModelListOfArticles = mutableListOf<ArticleResponse>()
-    private val articleToSend = MutableLiveData<FavouriteArticle>()
+    private val articleToSend = MutableLiveData<ArticleResponse>()
+//    private val articleDAO = MutableLiveData<ArticleDAO>()
     val articleModel = MutableLiveData<MutableList<ArticleResponse>>()
-    val articleDAO = MutableLiveData<ArticleDAO>()
+    lateinit var articleDAO: ArticleDAO
 
     fun newRandomListOfArticles(){
         viewModelListOfArticles.clear()
@@ -28,25 +28,25 @@ class ArticleViewModel: ViewModel() {
         }
     }
 
-    fun receiveArticle(favouriteArticle: FavouriteArticle){
-        articleToSend.postValue(favouriteArticle)
+    fun receiveArticle(articleResponse: ArticleResponse){
+        articleToSend.postValue(articleResponse)
     }
 
-    fun getArticle(): MutableLiveData<FavouriteArticle> = articleToSend
+    fun getArticle(): MutableLiveData<ArticleResponse> = articleToSend
 
     fun receiveDAO(db: ArticleDAO){
-        articleDAO.postValue(db)
+        articleDAO = db
     }
 
-    fun getDAO(): ArticleDAO? {
-        return this.articleDAO.value
+//    private fun useDAO(): ArticleDAO {
+//        return articleDAO.value!!
+//    }
+
+    fun insertFavouriteArticle(articleResponse: ArticleResponse){
+        articleDAO.insertFavouriteArticle(articleResponse)
     }
 
-    fun insertFavouriteArticle(favouriteArticle: FavouriteArticle){
-        getDAO()!!.insertFavouriteArticle(favouriteArticle)
-    }
-
-    fun getFavouriteArticles(): List<FavouriteArticle> {
-        return getDAO()!!.getAll()
-    }
+//    fun getFavouriteArticles(): List<ArticleResponse> {
+//        return useDAO().getAll()
+//    }
 }

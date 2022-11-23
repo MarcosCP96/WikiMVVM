@@ -3,13 +3,13 @@ package com.example.wikimvvm.daos
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.wikimvvm.model.FavouriteArticle
+import com.example.wikimvvm.model.ArticleResponse
 
 @Dao
 interface ArticleDAO {
     @Query("SELECT * FROM favouriteArticles")
-    fun getAll(): List<FavouriteArticle>
+    fun getAll(): List<ArticleResponse>
 
     @Insert
-    fun insertFavouriteArticle(favouriteArticle: FavouriteArticle)
+    fun insertFavouriteArticle(favouriteArticle: ArticleResponse) :Long
 }
