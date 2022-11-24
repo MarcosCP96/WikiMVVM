@@ -15,10 +15,5 @@ class MainActivity : AppCompatActivity() {
         setTheme(R.style.SplashTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val db = Room.databaseBuilder(
-            applicationContext,
-            ArticleDatabase::class.java, "articlesDB"
-        ).build()
-        articleViewModel.receiveDAO(db.articleDao())
     }
 }

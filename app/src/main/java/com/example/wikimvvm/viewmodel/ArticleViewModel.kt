@@ -1,52 +1,53 @@
 package com.example.wikimvvm.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.room.Room
 import com.example.wikimvvm.daos.ArticleDAO
 import com.example.wikimvvm.model.ArticleResponse
+import com.example.wikimvvm.model.Thumbnail
+import com.example.wikimvvm.repository.ArticleDatabase
 import com.example.wikimvvm.repository.ArticleRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
-class ArticleViewModel: ViewModel() {
+class ArticleViewModel : ViewModel() {
     private val articleRepository = ArticleRepository
     private val viewModelListOfArticles = mutableListOf<ArticleResponse>()
-    private val articleToSend = MutableLiveData<ArticleResponse>()
-//    private val articleDAO = MutableLiveData<ArticleDAO>()
-    val articleModel = MutableLiveData<MutableList<ArticleResponse>>()
-    lateinit var articleDAO: ArticleDAO
+    var articleModel = MutableLiveData<MutableList<ArticleResponse>>()
 
-    fun newRandomListOfArticles(){
+    fun newRandomListOfArticles() {
         viewModelListOfArticles.clear()
-        CoroutineScope(Dispatchers.IO).launch {
-            repeat(10){
-                    val randomArticle = articleRepository.getRandomArticle()
-                    viewModelListOfArticles.add(randomArticle)
+        repeat(10) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val randomArticle = articleRepository.getRandomArticle()
+                viewModelListOfArticles.add(randomArticle)
+                articleModel.postValue(viewModelListOfArticles)
             }
-            articleModel.postValue(viewModelListOfArticles)
         }
     }
 
-    fun receiveArticle(articleResponse: ArticleResponse){
-        articleToSend.postValue(articleResponse)
+    fun insertFavouriteArticle(context: Context, articleResponse: ArticleResponse) {
+        val db = Room.databaseBuilder(
+            context,
+            ArticleDatabase::class.java, "articlesDB"
+        ).build()
+        CoroutineScope(Dispatchers.IO).launch {
+            db.articleDao().insertFavouriteArticle(articleResponse)
+            println(db.articleDao().getAll())
+        }
+        db.close()
     }
 
-    fun getArticle(): MutableLiveData<ArticleResponse> = articleToSend
-
-    fun receiveDAO(db: ArticleDAO){
-        articleDAO = db
+    fun listAllFavouriteArticles(context: Context){
+//        val db = Room.databaseBuilder(
+//            context,
+//            ArticleDatabase::class.java, "articlesDB"
+//        ).build()
+//        CoroutineScope(Dispatchers.IO).launch {
+//            db.articleDao().getAll()
+//        }
+//        db.close()
     }
-
-//    private fun useDAO(): ArticleDAO {
-//        return articleDAO.value!!
-//    }
-
-    fun insertFavouriteArticle(articleResponse: ArticleResponse){
-        articleDAO.insertFavouriteArticle(articleResponse)
-    }
-
-//    fun getFavouriteArticles(): List<ArticleResponse> {
-//        return useDAO().getAll()
-//    }
 }

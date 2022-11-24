@@ -44,7 +44,7 @@ class ArticleFragment : Fragment() {
         }
 
         binding.addToFavouriteButton.setOnClickListener {
-            articleViewModel.insertFavouriteArticle(articleSent)
+            articleViewModel.insertFavouriteArticle(requireContext() ,articleSent)
         }
     }
 }

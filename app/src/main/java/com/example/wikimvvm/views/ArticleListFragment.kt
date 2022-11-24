@@ -23,7 +23,6 @@ class ArticleListFragment : Fragment() {
     private val binding get() = _binding!!
     private val articleViewModel: ArticleViewModel by viewModels()
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,19 +30,14 @@ class ArticleListFragment : Fragment() {
         _binding = FragmentArticleListBinding.inflate(inflater, container, false)
 //        binding.articleList.setHasFixedSize(true)
         binding.articleList.layoutManager = LinearLayoutManager(this.context)
-        articleViewModel.newRandomListOfArticles()
-
-//        val db = Room.databaseBuilder(
-//            requireContext(),
-//            ArticleDatabase::class.java, "articlesDB"
-//        ).build()
-//        val articleDao = db.articleDao()
-//        articleViewModel.receiveDAO(articleDao)
-
         val adapter = ArticleAdapter(parentFragmentManager) {
-            ArticleFragment().apply { arguments = Bundle().apply { putSerializable("articulo", it) } }
+            ArticleFragment().apply {
+                arguments = Bundle().apply { putSerializable("articulo", it) }
+            }
         }
         binding.articleList.adapter = adapter
+
+        articleViewModel.newRandomListOfArticles()
 
         articleViewModel.articleModel.observe(viewLifecycleOwner, Observer { listInViewModel ->
             adapter.changeList(listInViewModel)
@@ -55,8 +49,11 @@ class ArticleListFragment : Fragment() {
 
         binding.toFavourites.setOnClickListener {
             val toSaved = parentFragmentManager.beginTransaction()
-            toSaved.replace(R.id.placeholder, FavouriteArticlesFragment(), "articleFragment")
-                .commit()
+            toSaved.replace(
+                R.id.placeholder,
+                FavouriteArticlesFragment(),
+                "favouriteArticleFragment"
+            ).commit()
         }
         return binding.root
     }

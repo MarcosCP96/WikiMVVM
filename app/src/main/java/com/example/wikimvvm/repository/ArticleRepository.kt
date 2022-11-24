@@ -21,7 +21,6 @@ object ArticleRepository {
         randomArticle.title = article!!.title
         randomArticle.extract = article.extract
         randomArticle.thumbnail = article.thumbnail
-
         return randomArticle
     }
 }

@@ -12,7 +12,7 @@ class ArticleAdapter(
     private val fragManager: FragmentManager,
     private val onCLick: (articleResponse: ArticleResponse) -> Unit
 ) : RecyclerView.Adapter<ArticleViewHolder>() {
-    private var listOfArticles: List<ArticleResponse> = listOf()
+    var listOfArticles: List<ArticleResponse> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -30,6 +30,7 @@ class ArticleAdapter(
     }
 
     override fun getItemCount() = listOfArticles.size
+
     fun changeList(listInViewModel: MutableList<ArticleResponse>) {
         listOfArticles = listInViewModel
         notifyDataSetChanged()

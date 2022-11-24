@@ -1,6 +1,7 @@
 package com.example.wikimvvm.daos
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.wikimvvm.model.ArticleResponse
@@ -11,5 +12,8 @@ interface ArticleDAO {
     fun getAll(): List<ArticleResponse>
 
     @Insert
-    fun insertFavouriteArticle(favouriteArticle: ArticleResponse) :Long
+    fun insertFavouriteArticle(favouriteArticle: ArticleResponse)
+
+    @Delete
+    fun deleteArticle(articleResponse: ArticleResponse)
 }

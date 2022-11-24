@@ -7,12 +7,10 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wikimvvm.R
 import com.example.wikimvvm.views.ArticleFragment
-import com.example.wikimvvm.views.FavouriteArticlesFragment
 
 class FavouriteArticleAdapter(
     private val fragManager: FragmentManager,
-    private val onCLick: (articleResponse: ArticleResponse) -> Unit
-    ) : RecyclerView.Adapter<ArticleViewHolder>() {
+    private val onCLick: (articleResponse: ArticleResponse) -> Unit) : RecyclerView.Adapter<ArticleViewHolder>() {
     private var listOfFavouriteArticles: List<ArticleResponse> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
@@ -23,7 +21,7 @@ class FavouriteArticleAdapter(
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         val item = listOfFavouriteArticles[position]
         holder.render(item) {
-            val article = FavouriteArticlesFragment().apply {
+            val article = ArticleFragment().apply {
                 arguments = Bundle().apply { putSerializable("articulo", it) }
             }
             val toTargetBTransaction = fragManager.beginTransaction()
@@ -33,4 +31,9 @@ class FavouriteArticleAdapter(
     }
 
     override fun getItemCount() = listOfFavouriteArticles.size
+
+    fun changeList(listInViewModel: List<ArticleResponse>) {
+        listOfFavouriteArticles = listInViewModel
+        notifyDataSetChanged()
+    }
 }
