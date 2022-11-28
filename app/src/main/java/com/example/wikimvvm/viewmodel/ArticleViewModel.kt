@@ -2,6 +2,7 @@ package com.example.wikimvvm.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.Room
@@ -12,7 +13,7 @@ import com.example.wikimvvm.repository.ArticleDatabase
 import com.example.wikimvvm.repository.ArticleRepository
 import kotlinx.coroutines.*
 
-class ArticleViewModel : ViewModel() {
+class ArticleViewModel() : ViewModel() {
     private val articleRepository = ArticleRepository
     private val viewModelListOfArticles = mutableListOf<ArticleResponse>()
     var articleModel = MutableLiveData<MutableList<ArticleResponse>>()
@@ -28,6 +29,10 @@ class ArticleViewModel : ViewModel() {
         }
     }
 
+    fun returnListOfArticles(){
+        articleModel.postValue(viewModelListOfArticles)
+    }
+
     fun insertFavouriteArticle(context: Context, articleResponse: ArticleResponse) {
         val db = Room.databaseBuilder(
             context,
@@ -35,19 +40,7 @@ class ArticleViewModel : ViewModel() {
         ).build()
         CoroutineScope(Dispatchers.IO).launch {
             db.articleDao().insertFavouriteArticle(articleResponse)
-            println(db.articleDao().getAll())
         }
         db.close()
-    }
-
-    fun listAllFavouriteArticles(context: Context){
-//        val db = Room.databaseBuilder(
-//            context,
-//            ArticleDatabase::class.java, "articlesDB"
-//        ).build()
-//        CoroutineScope(Dispatchers.IO).launch {
-//            db.articleDao().getAll()
-//        }
-//        db.close()
     }
 }

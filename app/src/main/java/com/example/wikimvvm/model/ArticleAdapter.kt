@@ -21,17 +21,19 @@ class ArticleAdapter(
 
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         val item = listOfArticles[position]
-        holder.render(item){
-            val article = ArticleFragment().apply { arguments = Bundle().apply { putSerializable("articulo", it) } }
+        holder.render(item) {
+            val article = ArticleFragment().apply {
+                arguments = Bundle().apply { putSerializable("articulo", it) }
+            }
             val toTargetBTransaction = fragManager.beginTransaction()
             toTargetBTransaction.replace(R.id.placeholder, article, "articleFragment")
-                    .commit()
+                .commit()
         }
     }
 
     override fun getItemCount() = listOfArticles.size
 
-    fun changeList(listInViewModel: MutableList<ArticleResponse>) {
+    fun changeList(listInViewModel: List<ArticleResponse>) {
         listOfArticles = listInViewModel
         notifyDataSetChanged()
     }

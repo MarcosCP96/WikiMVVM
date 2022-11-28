@@ -10,7 +10,8 @@ import com.example.wikimvvm.views.ArticleFragment
 
 class FavouriteArticleAdapter(
     private val fragManager: FragmentManager,
-    private val onCLick: (articleResponse: ArticleResponse) -> Unit) : RecyclerView.Adapter<ArticleViewHolder>() {
+    private val onCLick: (articleResponse: ArticleResponse) -> Unit
+) : RecyclerView.Adapter<ArticleViewHolder>() {
     private var listOfFavouriteArticles: List<ArticleResponse> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
@@ -32,8 +33,8 @@ class FavouriteArticleAdapter(
 
     override fun getItemCount() = listOfFavouriteArticles.size
 
-    fun changeList(listInViewModel: List<ArticleResponse>) {
-        listOfFavouriteArticles = listInViewModel
+    fun changeList(list: List<ArticleResponse>) {
+        listOfFavouriteArticles = list
         notifyDataSetChanged()
     }
 }

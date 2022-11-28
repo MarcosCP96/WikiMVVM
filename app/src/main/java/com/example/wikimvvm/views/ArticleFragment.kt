@@ -35,7 +35,9 @@ class ArticleFragment : Fragment() {
 
         binding.tvTitle.text = articleSent.title
         binding.tvExtract.text = articleSent.extract
-        Glide.with(this).load(articleSent.thumbnail.source).into(binding.ivImage)
+        articleSent.thumbnail?.let {
+            Glide.with(this).load(it.source).into(binding.ivImage)
+        }
 
         binding.backToMenuButton.setOnClickListener {
             val toTargetBTransaction = parentFragmentManager.beginTransaction()

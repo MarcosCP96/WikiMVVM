@@ -42,8 +42,15 @@ class FavouriteArticlesFragment : Fragment() {
                 arguments = Bundle().apply { putSerializable("articulo", it) }
             }
         }
-
         binding.favouriteArticlesRecyclerView.adapter = adapter
+
+        CoroutineScope(Dispatchers.IO).launch {
+            listOfArticles = db.articleDao().getAll()
+            activity?.runOnUiThread {
+                adapter.changeList(listOfArticles)
+            }
+        }
+
         binding.backToMenuButton.setOnClickListener {
             val toTargetBTransaction = parentFragmentManager.beginTransaction()
             toTargetBTransaction.replace(R.id.placeholder, ArticleListFragment(), "articleFragment")

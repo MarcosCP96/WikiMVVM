@@ -39,8 +39,11 @@ class ArticleListFragment : Fragment() {
 
         articleViewModel.newRandomListOfArticles()
 
+
+
         articleViewModel.articleModel.observe(viewLifecycleOwner, Observer { listInViewModel ->
             adapter.changeList(listInViewModel)
+
         })
 
         binding.randomButton.setOnClickListener {

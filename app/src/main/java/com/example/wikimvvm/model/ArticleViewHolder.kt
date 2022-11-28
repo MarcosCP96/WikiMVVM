@@ -14,7 +14,9 @@ class ArticleViewHolder(view: View) : ViewHolder(view) {
 
     fun render(articleResponse: ArticleResponse, onCLick: (articleResponse: ArticleResponse) -> Unit) {
         article.text = articleResponse.title
-        Glide.with(this.itemView).load(articleResponse.thumbnail.source).into(articleImage)
+        articleResponse.thumbnail?.let {
+            Glide.with(this.itemView).load(it.source).into(articleImage)
+        }
         article.setOnClickListener { onCLick(articleResponse) }
     }
 }
