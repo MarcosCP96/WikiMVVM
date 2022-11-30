@@ -15,19 +15,8 @@ object ArticleRepository {
     }
 
     suspend fun getRandomArticle(): ArticleResponse {
-//        val randomArticle = ArticleResponse("", Thumbnail(""), "")
-//        val call = getRetrofit().create(APIService::class.java).getRandomArticle()
-//        val article = call.body()
-//        randomArticle.title = article!!.title
-//        randomArticle.extract = article.extract
-//        randomArticle.thumbnail = article.thumbnail
-//        return randomArticle
-//        val randomArticle = ArticleResponse("", Thumbnail(""), "")
         val call = getRetrofit().create(APIService::class.java).getRandomArticle()
         val article = call.body()!!
-//        randomArticle.title = article!!.title
-//        randomArticle.extract = article.extract
-//        randomArticle.thumbnail = article.thumbnail
         return article
     }
 }

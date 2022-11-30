@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import androidx.room.migration.Migration
 import com.example.wikimvvm.R
 import com.example.wikimvvm.databinding.FragmentFavouriteArticlesBinding
 import com.example.wikimvvm.model.ArticleResponse
@@ -35,7 +36,7 @@ class FavouriteArticlesFragment : Fragment() {
         val db = Room.databaseBuilder(
             requireContext(),
             ArticleDatabase::class.java, "articlesDB"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
 
         val adapter = FavouriteArticleAdapter(parentFragmentManager) {
             FavouriteArticlesFragment().apply {

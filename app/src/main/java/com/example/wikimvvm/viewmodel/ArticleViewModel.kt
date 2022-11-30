@@ -1,6 +1,7 @@
 package com.example.wikimvvm.viewmodel
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -27,10 +28,6 @@ class ArticleViewModel() : ViewModel() {
                 articleModel.postValue(viewModelListOfArticles)
             }
         }
-    }
-
-    fun returnListOfArticles(){
-        articleModel.postValue(viewModelListOfArticles)
     }
 
     fun insertFavouriteArticle(context: Context, articleResponse: ArticleResponse) {

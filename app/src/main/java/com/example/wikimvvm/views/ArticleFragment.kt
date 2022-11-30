@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
-import com.example.wikimvvm.R
 import com.example.wikimvvm.databinding.FragmentArticleBinding
 import com.example.wikimvvm.model.ArticleResponse
 import com.example.wikimvvm.model.Thumbnail
@@ -16,7 +15,7 @@ import com.example.wikimvvm.viewmodel.ArticleViewModel
 class ArticleFragment : Fragment() {
     private var _binding: FragmentArticleBinding? = null
     private val binding get() = _binding!!
-    private var articleSent = ArticleResponse("", Thumbnail(""),"")
+    private var articleSent = ArticleResponse("", Thumbnail(""), "")
     private val articleViewModel: ArticleViewModel by viewModels()
 
     override fun onCreateView(
@@ -40,13 +39,11 @@ class ArticleFragment : Fragment() {
         }
 
         binding.backToMenuButton.setOnClickListener {
-            val toTargetBTransaction = parentFragmentManager.beginTransaction()
-            toTargetBTransaction.replace(R.id.placeholder, ArticleListFragment(), "articleFragment")
-                .commit()
+            parentFragmentManager.popBackStack()
         }
 
         binding.addToFavouriteButton.setOnClickListener {
-            articleViewModel.insertFavouriteArticle(requireContext() ,articleSent)
+            articleViewModel.insertFavouriteArticle(requireContext(), articleSent)
         }
     }
 }
