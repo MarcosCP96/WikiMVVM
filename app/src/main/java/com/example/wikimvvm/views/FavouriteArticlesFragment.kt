@@ -9,12 +9,10 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
-import androidx.room.migration.Migration
 import com.example.wikimvvm.R
 import com.example.wikimvvm.databinding.FragmentFavouriteArticlesBinding
 import com.example.wikimvvm.model.ArticleAdapter
 import com.example.wikimvvm.model.ArticleResponse
-import com.example.wikimvvm.model.FavouriteArticleAdapter
 import com.example.wikimvvm.repository.ArticleDatabase
 import com.example.wikimvvm.viewmodel.ArticleViewModel
 import kotlinx.coroutines.CoroutineScope

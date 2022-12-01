@@ -1,6 +1,8 @@
 package com.example.wikimvvm.viewmodel
 
+import android.app.AlertDialog
 import android.content.Context
+import android.os.Looper
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -31,7 +33,7 @@ class ArticleViewModel() : ViewModel() {
         }
     }
 
-    fun insertFavouriteArticle(context: Context, articleResponse: ArticleResponse) {
+    private fun insertFavouriteArticle(context: Context, articleResponse: ArticleResponse) {
         val db = Room.databaseBuilder(
             context,
             ArticleDatabase::class.java, "articlesDB"
@@ -42,22 +44,20 @@ class ArticleViewModel() : ViewModel() {
         db.close()
     }
 
-//    fun checkIfArticleInDb(context: Context, articleResponse: ArticleResponse): Boolean {
-//        var isArticleInDb = false
-//        println(isArticleInDb)
-//        val db = Room.databaseBuilder(
-//            context,
-//            ArticleDatabase::class.java, "articlesDB"
-//        ).build()
-//        CoroutineScope(Dispatchers.IO).launch {
-//            isArticleInDb = db.articleDao().getArticle(articleResponse.title)
-//        }
-//        db.close()
-//        println(isArticleInDb)
-//        return isArticleInDb
-//    }
+    fun checkIfArticleInDb(context: Context, articleResponse: ArticleResponse) {
+        val db = Room.databaseBuilder(
+            context,
+            ArticleDatabase::class.java, "articlesDB"
+        ).build()
+        CoroutineScope(Dispatchers.IO).launch {
+            if (db.articleDao().getArticle(articleResponse.title) == null) {
+                insertFavouriteArticle(context, articleResponse)
+            }
+        }
+        db.close()
+    }
 
-    fun emptyListOfFavourites(context: Context){
+    fun emptyListOfFavourites(context: Context) {
         val db = Room.databaseBuilder(
             context,
             ArticleDatabase::class.java, "articlesDB"
@@ -68,7 +68,7 @@ class ArticleViewModel() : ViewModel() {
         db.close()
     }
 
-    fun deleteArticleFromFavourites(context: Context, articleToDelete: ArticleResponse){
+    fun deleteArticleFromFavourites(context: Context, articleToDelete: ArticleResponse) {
         val db = Room.databaseBuilder(
             context,
             ArticleDatabase::class.java, "articlesDB"

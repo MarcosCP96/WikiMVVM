@@ -46,7 +46,8 @@ class ArticleFragment : Fragment() {
         }
 
         binding.addToFavouriteButton.setOnClickListener {
-            articleViewModel.insertFavouriteArticle(requireContext(), articleSent)
+            articleViewModel.checkIfArticleInDb(requireContext(), articleSent)
+//            articleViewModel.insertFavouriteArticle(requireContext(), articleSent)
         }
 
         binding.deleteButton.setOnClickListener {
