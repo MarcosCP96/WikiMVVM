@@ -3,18 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@drawable/fondo"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".views.ArticleListFragment">
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/toFavourites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="200dp"
-        android:backgroundTint="@color/black"
+        android:layout_marginStart="100dp"
+        android:textColor="@color/black"
+        android:background="@drawable/my_button_bg"
         android:text="saved articles"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/randomButton"
         app:layout_constraintTop_toBottomOf="@id/articleList" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -22,16 +23,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/randomButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/black"
+        android:textColor="@color/black"
+        android:background="@drawable/my_button_bg"
         android:text="get articles"
         app:layout_constraintTop_toBottomOf="@id/articleList"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="40dp"/>
 
 
 

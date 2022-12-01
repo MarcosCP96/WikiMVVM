@@ -19,7 +19,6 @@ class ArticleViewModel() : ViewModel() {
     private val articleRepository = ArticleRepository
     private val viewModelListOfArticles = mutableListOf<ArticleResponse>()
     var articleModel = MutableLiveData<MutableList<ArticleResponse>>()
-    private var articleInDb = ArticleResponse("", Thumbnail(""), "")
 
     fun newRandomListOfArticles() {
         viewModelListOfArticles.clear()
@@ -43,17 +42,20 @@ class ArticleViewModel() : ViewModel() {
         db.close()
     }
 
-    fun isArticleInDb(context: Context, articleResponse: ArticleResponse): Boolean {
-        val db = Room.databaseBuilder(
-            context,
-            ArticleDatabase::class.java, "articlesDB"
-        ).build()
-        CoroutineScope(Dispatchers.IO).launch {
-            articleInDb = db.articleDao().getArticle(articleResponse.title)
-        }
-        db.close()
-        return articleInDb != null
-    }
+//    fun checkIfArticleInDb(context: Context, articleResponse: ArticleResponse): Boolean {
+//        var isArticleInDb = false
+//        println(isArticleInDb)
+//        val db = Room.databaseBuilder(
+//            context,
+//            ArticleDatabase::class.java, "articlesDB"
+//        ).build()
+//        CoroutineScope(Dispatchers.IO).launch {
+//            isArticleInDb = db.articleDao().getArticle(articleResponse.title)
+//        }
+//        db.close()
+//        println(isArticleInDb)
+//        return isArticleInDb
+//    }
 
     fun emptyListOfFavourites(context: Context){
         val db = Room.databaseBuilder(
