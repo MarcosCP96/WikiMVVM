@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wikimvvm.R
 import com.example.wikimvvm.databinding.FragmentArticleListBinding
@@ -42,10 +41,10 @@ class ArticleListFragment : Fragment() {
 
         binding.articleList.adapter = adapter
 
-        articleViewModel.articleModel.observe(viewLifecycleOwner, Observer { listInViewModel ->
+        articleViewModel.articleModel.observe(viewLifecycleOwner) { listInViewModel ->
             adapter.changeList(listInViewModel)
             listOfArticles = listInViewModel
-        })
+        }
 
         articleViewModel.newRandomListOfArticles()
 

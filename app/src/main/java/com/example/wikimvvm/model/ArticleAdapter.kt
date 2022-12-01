@@ -1,12 +1,9 @@
 package com.example.wikimvvm.model
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.wikimvvm.R
-import com.example.wikimvvm.views.ArticleFragment
 
 class ArticleAdapter(
     private val onCLick: (articleResponse: ArticleResponse) -> Unit

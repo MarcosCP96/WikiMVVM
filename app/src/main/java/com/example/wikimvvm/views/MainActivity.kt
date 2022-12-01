@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.FragmentTransaction
 import com.example.wikimvvm.R
-import com.example.wikimvvm.model.ArticleResponse
 
 class MainActivity : AppCompatActivity(){
 
