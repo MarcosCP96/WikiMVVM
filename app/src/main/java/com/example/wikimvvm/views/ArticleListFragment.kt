@@ -58,7 +58,6 @@ class ArticleListFragment : Fragment() {
             toSavedArticles.add(
                 R.id.placeholder,
                 FavouriteArticlesFragment(),
-                "favouriteArticleFragment"
             ).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .addToBackStack(null)
                 .commit()

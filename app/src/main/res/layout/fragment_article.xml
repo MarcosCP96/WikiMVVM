@@ -20,6 +20,16 @@
         app:layout_constraintVertical_bias="0.267"
         tools:text="titulo" />
 
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintVertical_bias="0.215">
     <TextView
         android:id="@+id/tvExtract"
         android:layout_width="wrap_content"
@@ -32,12 +42,12 @@
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
         app:layout_constraintVertical_bias="0.215"
         tools:text="texto" />
-
+    </ScrollView>
     <ImageView
         android:id="@+id/ivImage"
         android:layout_width="100dp"
         android:layout_height="150dp"
-        app:layout_constraintTop_toBottomOf="@+id/tvExtract"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="15dp"/>
@@ -57,7 +67,7 @@
         android:id="@+id/addToFavouriteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:backgroundTint="@color/black"
         android:text="add to favourite"
         app:layout_constraintEnd_toEndOf="parent"
@@ -65,4 +75,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/backToMenuButton" />
 
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/addToFavouriteButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/black"
+        android:text="Delete from favourites"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

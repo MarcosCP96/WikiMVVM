@@ -11,6 +11,12 @@ interface ArticleDAO {
     @Query("SELECT * FROM favouriteArticles")
     fun getAll(): List<ArticleResponse>
 
+    @Query("SELECT * FROM favouriteArticles WHERE title LIKE :title")
+    fun getArticle(title: String): ArticleResponse
+
+    @Query("DELETE FROM favouriteArticles")
+    fun emptyFavouriteList()
+
     @Insert
     fun insertFavouriteArticle(favouriteArticle: ArticleResponse)
 

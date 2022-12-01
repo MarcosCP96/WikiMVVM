@@ -5,12 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import androidx.room.migration.Migration
 import com.example.wikimvvm.R
 import com.example.wikimvvm.databinding.FragmentFavouriteArticlesBinding
+import com.example.wikimvvm.model.ArticleAdapter
 import com.example.wikimvvm.model.ArticleResponse
 import com.example.wikimvvm.model.FavouriteArticleAdapter
 import com.example.wikimvvm.repository.ArticleDatabase
@@ -38,11 +40,19 @@ class FavouriteArticlesFragment : Fragment() {
             ArticleDatabase::class.java, "articlesDB"
         ).fallbackToDestructiveMigration().build()
 
-        val adapter = FavouriteArticleAdapter(parentFragmentManager) {
-            FavouriteArticlesFragment().apply {
+        val adapter = ArticleAdapter {
+            val fragment = ArticleFragment().apply {
                 arguments = Bundle().apply { putSerializable("articulo", it) }
             }
+            val toSelectedArticle = parentFragmentManager.beginTransaction()
+            toSelectedArticle.add(
+                R.id.placeholder,
+                fragment
+            ).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .addToBackStack(null)
+                .commit()
         }
+
         binding.favouriteArticlesRecyclerView.adapter = adapter
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -53,10 +63,13 @@ class FavouriteArticlesFragment : Fragment() {
         }
 
         binding.backToMenuButton.setOnClickListener {
-            val toTargetBTransaction = parentFragmentManager.beginTransaction()
-            toTargetBTransaction.replace(R.id.placeholder, ArticleListFragment(), "articleFragment")
-                .commit()
+            parentFragmentManager.popBackStack()
         }
+
+        binding.emptyListButton.setOnClickListener {
+            articleViewModel.emptyListOfFavourites(requireContext())
+        }
+
         return binding.root
     }
 }

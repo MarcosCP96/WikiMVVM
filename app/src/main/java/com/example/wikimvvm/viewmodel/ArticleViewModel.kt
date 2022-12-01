@@ -1,6 +1,7 @@
 package com.example.wikimvvm.viewmodel
 
 import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -18,6 +19,7 @@ class ArticleViewModel() : ViewModel() {
     private val articleRepository = ArticleRepository
     private val viewModelListOfArticles = mutableListOf<ArticleResponse>()
     var articleModel = MutableLiveData<MutableList<ArticleResponse>>()
+    private var articleInDb = ArticleResponse("", Thumbnail(""), "")
 
     fun newRandomListOfArticles() {
         viewModelListOfArticles.clear()
@@ -40,4 +42,39 @@ class ArticleViewModel() : ViewModel() {
         }
         db.close()
     }
+
+    fun isArticleInDb(context: Context, articleResponse: ArticleResponse): Boolean {
+        val db = Room.databaseBuilder(
+            context,
+            ArticleDatabase::class.java, "articlesDB"
+        ).build()
+        CoroutineScope(Dispatchers.IO).launch {
+            articleInDb = db.articleDao().getArticle(articleResponse.title)
+        }
+        db.close()
+        return articleInDb != null
+    }
+
+    fun emptyListOfFavourites(context: Context){
+        val db = Room.databaseBuilder(
+            context,
+            ArticleDatabase::class.java, "articlesDB"
+        ).build()
+        CoroutineScope(Dispatchers.IO).launch {
+            db.articleDao().emptyFavouriteList()
+        }
+        db.close()
+    }
+
+    fun deleteArticleFromFavourites(context: Context, articleToDelete: ArticleResponse){
+        val db = Room.databaseBuilder(
+            context,
+            ArticleDatabase::class.java, "articlesDB"
+        ).build()
+        CoroutineScope(Dispatchers.IO).launch {
+            db.articleDao().deleteArticle(articleToDelete)
+        }
+        db.close()
+    }
 }
+

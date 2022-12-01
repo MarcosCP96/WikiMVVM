@@ -9,7 +9,6 @@ import com.example.wikimvvm.R
 import com.example.wikimvvm.views.ArticleFragment
 
 class FavouriteArticleAdapter(
-    private val fragManager: FragmentManager,
     private val onCLick: (articleResponse: ArticleResponse) -> Unit
 ) : RecyclerView.Adapter<ArticleViewHolder>() {
     private var listOfFavouriteArticles: List<ArticleResponse> = listOf()
@@ -22,12 +21,7 @@ class FavouriteArticleAdapter(
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         val item = listOfFavouriteArticles[position]
         holder.render(item) {
-            val article = ArticleFragment().apply {
-                arguments = Bundle().apply { putSerializable("articulo", it) }
-            }
-            val toTargetBTransaction = fragManager.beginTransaction()
-            toTargetBTransaction.replace(R.id.placeholder, article, "articleFragment")
-                .commit()
+            onCLick.invoke(it)
         }
     }
 
