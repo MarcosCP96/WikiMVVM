@@ -1,5 +1,6 @@
 package com.example.wikimvvm.views
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.example.wikimvvm.databinding.FragmentArticleBinding
 import com.example.wikimvvm.model.ArticleResponse
 import com.example.wikimvvm.model.Thumbnail
+import com.example.wikimvvm.useCase.ArticleInDbToastUseCase
 import com.example.wikimvvm.viewmodel.ArticleViewModel
 
 class ArticleFragment : Fragment() {
@@ -44,7 +46,6 @@ class ArticleFragment : Fragment() {
 
         binding.addToFavouriteButton.setOnClickListener {
             articleViewModel.checkIfArticleInDb(requireContext(), articleSent)
-//            articleViewModel.insertFavouriteArticle(requireContext(), articleSent)
         }
 
         binding.deleteButton.setOnClickListener {

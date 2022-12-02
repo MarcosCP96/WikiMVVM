@@ -7,11 +7,15 @@ import androidx.room.Room
 import com.example.wikimvvm.model.ArticleResponse
 import com.example.wikimvvm.repository.ArticleDatabase
 import com.example.wikimvvm.repository.ArticleRepository
+import com.example.wikimvvm.useCase.*
 import kotlinx.coroutines.*
 
 class ArticleViewModel : ViewModel() {
     private val articleRepository = ArticleRepository
     private val viewModelListOfArticles = mutableListOf<ArticleResponse>()
+    private val checkIfArticleInFavouritesUseCase = CheckIfArticleInFavouritesUseCase()
+    private val emptyListOfFavouritesUseCase = EmptyListOfFavouritesUseCase()
+    private val deleteArticleFromFavouritesUseCase = DeleteArticleFromFavouritesUseCase()
     var articleModel = MutableLiveData<MutableList<ArticleResponse>>()
 
     fun newRandomListOfArticles() {
@@ -26,49 +30,18 @@ class ArticleViewModel : ViewModel() {
     }
 
     fun checkIfArticleInDb(context: Context, articleResponse: ArticleResponse) {
-        val db = Room.databaseBuilder(
-            context,
-            ArticleDatabase::class.java, "articlesDB"
-        ).build()
-        CoroutineScope(Dispatchers.IO).launch {
-            if (db.articleDao().getArticle(articleResponse.title) == null) {
-                insertFavouriteArticle(context, articleResponse)
-            }
-        }
-        db.close()
+        checkIfArticleInFavouritesUseCase.checkIfArticleInFavourite(context, articleResponse)
     }
 
     fun emptyListOfFavourites(context: Context) {
-        val db = Room.databaseBuilder(
-            context,
-            ArticleDatabase::class.java, "articlesDB"
-        ).build()
-        CoroutineScope(Dispatchers.IO).launch {
-            db.articleDao().emptyFavouriteList()
-        }
-        db.close()
+        emptyListOfFavouritesUseCase.emptyListOfFavourites(context)
     }
 
     fun deleteArticleFromFavourites(context: Context, articleToDelete: ArticleResponse) {
-        val db = Room.databaseBuilder(
-            context,
-            ArticleDatabase::class.java, "articlesDB"
-        ).build()
-        CoroutineScope(Dispatchers.IO).launch {
-            db.articleDao().deleteArticle(articleToDelete)
-        }
-        db.close()
+        deleteArticleFromFavouritesUseCase.deleteArticleFromFavourites(context, articleToDelete)
     }
 
     private fun insertFavouriteArticle(context: Context, articleResponse: ArticleResponse) {
-        val db = Room.databaseBuilder(
-            context,
-            ArticleDatabase::class.java, "articlesDB"
-        ).build()
-        CoroutineScope(Dispatchers.IO).launch {
-            db.articleDao().insertFavouriteArticle(articleResponse)
-        }
-        db.close()
     }
 }
 

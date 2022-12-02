@@ -29,7 +29,6 @@ class FavouriteArticlesFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         _binding = FragmentFavouriteArticlesBinding.inflate(inflater, container, false)
         binding.favouriteArticlesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 

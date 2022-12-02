@@ -25,7 +25,7 @@ class ArticleAdapter(
     override fun getItemCount() = listOfArticles.size
 
     fun changeList(listInViewModel: List<ArticleResponse>) {
-        listOfArticles = listInViewModel
+        listOfArticles = listInViewModel.filterNotNull()
         notifyDataSetChanged()
     }
 }
