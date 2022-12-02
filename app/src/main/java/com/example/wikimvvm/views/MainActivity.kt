@@ -11,6 +11,7 @@ class MainActivity : AppCompatActivity(){
         setTheme(R.style.SplashTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         val toSaved = supportFragmentManager.beginTransaction()
         toSaved.replace(
             R.id.placeholder,
