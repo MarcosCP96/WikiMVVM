@@ -15,6 +15,7 @@ import com.example.wikimvvm.model.ArticleAdapter
 import com.example.wikimvvm.model.ArticleResponse
 import com.example.wikimvvm.repository.ArticleDatabase
 import com.example.wikimvvm.viewmodel.ArticleViewModel
+import com.example.wikimvvm.viewmodel.ViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,7 +23,8 @@ import kotlinx.coroutines.launch
 class FavouriteArticlesFragment : Fragment() {
     private var _binding: FragmentFavouriteArticlesBinding? = null
     private val binding get() = _binding!!
-    private val articleViewModel: ArticleViewModel by viewModels()
+//    private val articleViewModel: ArticleViewModel by viewModels()
+    private val articleViewModel: ArticleViewModel by viewModels { ViewModelFactory(requireContext()) }
     private var listOfArticles = listOf<ArticleResponse>()
 
     override fun onCreateView(
@@ -64,7 +66,8 @@ class FavouriteArticlesFragment : Fragment() {
         }
 
         binding.emptyListButton.setOnClickListener {
-            articleViewModel.emptyListOfFavourites(requireContext())
+            articleViewModel.emptyListOfFavourites()
+            parentFragmentManager.popBackStack()
         }
 
         return binding.root

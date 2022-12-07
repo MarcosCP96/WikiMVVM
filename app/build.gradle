@@ -8,7 +8,7 @@ android {
     namespace 'com.example.wikimvvm'
     compileSdk 33
 
-    buildFeatures{
+    buildFeatures {
         viewBinding = true
         dataBinding = true
     }
@@ -35,6 +35,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    tasks.withType(Test) {
+        useJUnitPlatform()
     }
 }
 
@@ -65,7 +68,7 @@ dependencies {
     // optional - Paging 3 Integration
     implementation("androidx.room:room-paging:2.4.3")
     implementation 'com.github.bumptech.glide:glide:4.14.2'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
+    kapt 'com.github.bumptech.glide:compiler:4.14.2'
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
@@ -79,9 +82,8 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.1'
     testImplementation 'org.junit.platform:junit-platform-commons:1.9.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
-    testImplementation ("org.mockito:mockito-core:4.8.0")
-    testImplementation ("org.mockito.kotlin:mockito-kotlin:4.0.0")
+    testImplementation("org.mockito:mockito-core:4.8.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
     testImplementation "org.mockito:mockito-inline:2.13.0"
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
@@ -93,4 +95,8 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:1.5.4"
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    androidTestImplementation 'androidx.test:runner:1.5.1'
+    androidTestImplementation 'androidx.test:rules:1.5.0'
+    testImplementation 'androidx.test:core:1.5.0'
 }

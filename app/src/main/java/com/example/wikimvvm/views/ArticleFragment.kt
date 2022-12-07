@@ -1,24 +1,25 @@
 package com.example.wikimvvm.views
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.example.wikimvvm.databinding.FragmentArticleBinding
 import com.example.wikimvvm.model.ArticleResponse
 import com.example.wikimvvm.model.Thumbnail
-import com.example.wikimvvm.useCase.ArticleInDbToastUseCase
 import com.example.wikimvvm.viewmodel.ArticleViewModel
+import com.example.wikimvvm.viewmodel.ViewModelFactory
 
 class ArticleFragment : Fragment() {
     private var _binding: FragmentArticleBinding? = null
     private val binding get() = _binding!!
     private var articleSent = ArticleResponse("", Thumbnail(""), "")
-    private val articleViewModel: ArticleViewModel by viewModels()
+//    private val articleViewModel: ArticleViewModel by viewModels()
+    private val articleViewModel: ArticleViewModel by viewModels { ViewModelFactory(requireContext()) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,11 +46,11 @@ class ArticleFragment : Fragment() {
         }
 
         binding.addToFavouriteButton.setOnClickListener {
-            articleViewModel.checkIfArticleInDb(requireContext(), articleSent)
+            articleViewModel.checkIfArticleInDb(articleSent)
         }
 
         binding.deleteButton.setOnClickListener {
-            articleViewModel.deleteArticleFromFavourites(requireContext(), articleSent)
+            articleViewModel.deleteArticleFromFavourites(articleSent)
         }
     }
 }

@@ -10,12 +10,17 @@ import com.example.wikimvvm.repository.ArticleRepository
 import com.example.wikimvvm.useCase.*
 import kotlinx.coroutines.*
 
-class ArticleViewModel : ViewModel() {
+class ArticleViewModel(context: Context) : ViewModel() {
+    private var db: ArticleDatabase = Room.databaseBuilder(
+        context,
+        ArticleDatabase::class.java, "articlesDB"
+    ).build()
     private val articleRepository = ArticleRepository
     private val viewModelListOfArticles = mutableListOf<ArticleResponse>()
-    private val checkIfArticleInFavouritesUseCase = CheckIfArticleInFavouritesUseCase()
-    private val emptyListOfFavouritesUseCase = EmptyListOfFavouritesUseCase()
-    private val deleteArticleFromFavouritesUseCase = DeleteArticleFromFavouritesUseCase()
+    private val checkIfArticleInFavouritesUseCase = CheckIfArticleInFavouritesUseCase(db.articleDao())
+    private val emptyListOfFavouritesUseCase = EmptyListOfFavouritesUseCase(db.articleDao())
+    private val deleteArticleFromFavouritesUseCase = DeleteArticleFromFavouritesUseCase(db.articleDao())
+    private val insertFavouriteArticleUseCase = InsertFavouriteArticleUseCase(db.articleDao())
     var articleModel = MutableLiveData<MutableList<ArticleResponse>>()
 
     fun newRandomListOfArticles() {
@@ -29,19 +34,25 @@ class ArticleViewModel : ViewModel() {
         }
     }
 
-    fun checkIfArticleInDb(context: Context, articleResponse: ArticleResponse) {
-        checkIfArticleInFavouritesUseCase.checkIfArticleInFavourite(context, articleResponse)
+    fun checkIfArticleInDb(articleResponse: ArticleResponse) {
+        CoroutineScope(Dispatchers.IO).launch {
+            if (checkIfArticleInFavouritesUseCase.checkIfArticleInFavourite(articleResponse)) {
+                insertFavouriteArticleUseCase.insertFavouriteArticle(articleResponse)
+            }
+        }
     }
 
-    fun emptyListOfFavourites(context: Context) {
-        emptyListOfFavouritesUseCase.emptyListOfFavourites(context)
+    fun emptyListOfFavourites() {
+        CoroutineScope(Dispatchers.IO).launch {
+            emptyListOfFavouritesUseCase.emptyListOfFavourites()
+        }
     }
 
-    fun deleteArticleFromFavourites(context: Context, articleToDelete: ArticleResponse) {
-        deleteArticleFromFavouritesUseCase.deleteArticleFromFavourites(context, articleToDelete)
+    fun deleteArticleFromFavourites(articleToDelete: ArticleResponse) {
+        CoroutineScope(Dispatchers.IO).launch {
+            deleteArticleFromFavouritesUseCase.deleteArticleFromFavourites(articleToDelete)
+        }
     }
 
-    private fun insertFavouriteArticle(context: Context, articleResponse: ArticleResponse) {
-    }
 }
 
