@@ -1,6 +1,8 @@
 package com.example.wikimvvm.model
 
 import androidx.room.TypeConverter
+import retrofit2.http.Url
+import java.net.URL
 
 class ClassConverters {
     @TypeConverter
@@ -15,4 +17,14 @@ class ClassConverters {
         }
         return Thumbnail(string)
     }
+
+//    @TypeConverter
+//    fun fromContentToList(list: List<List<String>>): String {
+//        return list[0][0]
+//    }
+//
+//    @TypeConverter
+//    fun fromListToContent(url: String): List<List<String>>{
+//        return listOf(listOf(url))
+//    }
 }

@@ -9,8 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.example.wikimvvm.databinding.FragmentArticleBinding
-import com.example.wikimvvm.model.ArticleResponse
-import com.example.wikimvvm.model.Thumbnail
+import com.example.wikimvvm.model.*
 import com.example.wikimvvm.viewmodel.ArticleViewModel
 import com.example.wikimvvm.viewmodel.ViewModelFactory
 
@@ -18,7 +17,6 @@ class ArticleFragment : Fragment() {
     private var _binding: FragmentArticleBinding? = null
     private val binding get() = _binding!!
     private var articleSent = ArticleResponse("", Thumbnail(""), "")
-//    private val articleViewModel: ArticleViewModel by viewModels()
     private val articleViewModel: ArticleViewModel by viewModels { ViewModelFactory(requireContext()) }
 
     override fun onCreateView(
@@ -46,11 +44,20 @@ class ArticleFragment : Fragment() {
         }
 
         binding.addToFavouriteButton.setOnClickListener {
-            articleViewModel.checkIfArticleInDb(articleSent)
+            val toast = Toast.makeText(requireContext(), "${articleSent.title} añadido a favoritos", Toast.LENGTH_SHORT)
+            articleViewModel.addArticleToFavourite(toast, articleSent)
         }
 
         binding.deleteButton.setOnClickListener {
-            articleViewModel.deleteArticleFromFavourites(articleSent)
+            val toast = Toast.makeText(requireContext(), "${articleSent.title} borrado de favoritos", Toast.LENGTH_SHORT)
+            articleViewModel.deleteArticleFromFavourites(toast, articleSent)
+            parentFragmentManager.popBackStack()
+        }
+
+        binding.toUrlButton.setOnClickListener {
+//            val openURL = Intent(Intent.ACTION_VIEW)
+//            openURL.data = Uri.parse(articleSent.content_urls[0][0])
+//            startActivity(openURL)
         }
     }
 }
