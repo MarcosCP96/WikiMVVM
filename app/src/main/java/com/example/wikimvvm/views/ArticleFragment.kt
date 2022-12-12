@@ -1,5 +1,7 @@
 package com.example.wikimvvm.views
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +18,7 @@ import com.example.wikimvvm.viewmodel.ViewModelFactory
 class ArticleFragment : Fragment() {
     private var _binding: FragmentArticleBinding? = null
     private val binding get() = _binding!!
-    private var articleSent = ArticleResponse("", Thumbnail(""), "")
+    private var articleSent = ArticleResponse("", Thumbnail(""), "", ContentURLs(Mobile("")))
     private val articleViewModel: ArticleViewModel by viewModels { ViewModelFactory(requireContext()) }
 
     override fun onCreateView(
@@ -55,9 +57,9 @@ class ArticleFragment : Fragment() {
         }
 
         binding.toUrlButton.setOnClickListener {
-//            val openURL = Intent(Intent.ACTION_VIEW)
-//            openURL.data = Uri.parse(articleSent.content_urls[0][0])
-//            startActivity(openURL)
+            val openURL = Intent(Intent.ACTION_VIEW)
+            openURL.data = Uri.parse(articleSent.content_urls.mobile.page)
+            startActivity(openURL)
         }
     }
 }
