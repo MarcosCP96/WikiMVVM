@@ -18,6 +18,7 @@ interface ArticleDAO {
     fun emptyFavouriteList()
 
     @Insert
+    @JvmSuppressWildcards
     fun insertFavouriteArticle(favouriteArticle: ArticleResponse)
 
     @Delete

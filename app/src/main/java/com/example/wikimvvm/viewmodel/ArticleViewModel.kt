@@ -54,7 +54,7 @@ class ArticleViewModel(context: Context) : ViewModel() {
         }
     }
 
-    fun deleteArticleFromFavourites(toast: Toast, articleToDelete: ArticleResponse) {
+    fun deleteArticleFromFavourites(toast: Toast,articleToDelete: ArticleResponse) {
         CoroutineScope(Dispatchers.IO).launch {
             if (!checkIfArticleInFavouritesUseCase.checkIfArticleInFavourite(articleToDelete)){
                 toast.show()

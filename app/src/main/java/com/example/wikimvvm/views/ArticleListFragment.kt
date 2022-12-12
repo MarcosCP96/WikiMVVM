@@ -20,7 +20,6 @@ import com.example.wikimvvm.viewmodel.ViewModelFactory
 class ArticleListFragment : Fragment() {
     private var _binding: FragmentArticleListBinding? = null
     private val binding get() = _binding!!
-//    private val articleViewModel: ArticleViewModel by viewModels()
     private val articleViewModel: ArticleViewModel by viewModels { ViewModelFactory(requireContext()) }
 
     private var listOfArticles = mutableListOf<ArticleResponse>()

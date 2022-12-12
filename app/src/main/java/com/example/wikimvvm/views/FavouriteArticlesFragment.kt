@@ -24,7 +24,6 @@ import kotlinx.coroutines.launch
 class FavouriteArticlesFragment : Fragment() {
     private var _binding: FragmentFavouriteArticlesBinding? = null
     private val binding get() = _binding!!
-//    private val articleViewModel: ArticleViewModel by viewModels()
     private val articleViewModel: ArticleViewModel by viewModels { ViewModelFactory(requireContext()) }
     private var listOfArticles = listOf<ArticleResponse>()
 
@@ -52,16 +51,13 @@ class FavouriteArticlesFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
-
         binding.favouriteArticlesRecyclerView.adapter = adapter
-
         CoroutineScope(Dispatchers.IO).launch {
             listOfArticles = db.articleDao().getAll()
             activity?.runOnUiThread {
                 adapter.changeList(listOfArticles)
             }
         }
-
         binding.backToMenuButton.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
