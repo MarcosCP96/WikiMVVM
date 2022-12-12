@@ -12,8 +12,8 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val toSaved = supportFragmentManager.beginTransaction()
-        toSaved.replace(
+        val toArticleList = supportFragmentManager.beginTransaction()
+        toArticleList.replace(
             R.id.placeholder,
             ArticleListFragment(),
             "favouriteArticleFragment"
