@@ -15,7 +15,6 @@ object ArticleRepository {
 
     suspend fun getRandomArticle(): ArticleResponse {
         val call = getRetrofit().create(APIService::class.java).getRandomArticle()
-        println(call.body())
         return call.body()!!
     }
 }

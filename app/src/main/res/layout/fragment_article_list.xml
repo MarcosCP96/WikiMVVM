@@ -36,7 +36,4 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginLeft="40dp"/>
 
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,4 +7,4 @@ import androidx.room.PrimaryKey
 data class ArticleResponse(@PrimaryKey var title: String,
                            var thumbnail: Thumbnail?,
                            var extract: String,
-                            var content_urls: ContentURLs) : java.io.Serializable
+                           var content_urls: ContentURLs) : java.io.Serializable

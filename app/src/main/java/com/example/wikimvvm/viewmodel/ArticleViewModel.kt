@@ -15,7 +15,7 @@ class ArticleViewModel(context: Context) : ViewModel() {
     private var db: ArticleDatabase = Room.databaseBuilder(
         context,
         ArticleDatabase::class.java, "articlesDB"
-    ).build()
+    ).fallbackToDestructiveMigration().build()
     private val articleRepository = ArticleRepository
     private val viewModelListOfArticles = mutableListOf<ArticleResponse>()
     private val checkIfArticleInFavouritesUseCase = CheckIfArticleInFavouritesUseCase(db.articleDao())
