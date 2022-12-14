@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.wikimvvm.R
 
 class ArticleAdapter(
-    private val onCLick: (articleResponse: ArticleResponse) -> Unit
+    private val onClick: (articleResponse: ArticleResponse) -> Unit
 ) : RecyclerView.Adapter<ArticleViewHolder>() {
-    var listOfArticles: List<ArticleResponse> = listOf()
+    private var listOfArticles: List<ArticleResponse> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -18,7 +18,7 @@ class ArticleAdapter(
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         val item = listOfArticles[position]
         holder.render(item) {
-            onCLick.invoke(it)
+            onClick.invoke(it)
         }
     }
 

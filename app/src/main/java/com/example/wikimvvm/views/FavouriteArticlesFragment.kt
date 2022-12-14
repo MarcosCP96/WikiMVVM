@@ -32,6 +32,11 @@ class FavouriteArticlesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFavouriteArticlesBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.favouriteArticlesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         val db = Room.databaseBuilder(
@@ -51,6 +56,7 @@ class FavouriteArticlesFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
+
         binding.favouriteArticlesRecyclerView.adapter = adapter
         CoroutineScope(Dispatchers.IO).launch {
             listOfArticles = db.articleDao().getAll()
@@ -58,6 +64,7 @@ class FavouriteArticlesFragment : Fragment() {
                 adapter.changeList(listOfArticles)
             }
         }
+
         binding.backToMenuButton.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
@@ -67,7 +74,5 @@ class FavouriteArticlesFragment : Fragment() {
             articleViewModel.emptyListOfFavourites(toast)
             parentFragmentManager.popBackStack()
         }
-
-        return binding.root
     }
 }

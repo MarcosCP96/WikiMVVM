@@ -10,10 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wikimvvm.R
 import com.example.wikimvvm.databinding.FragmentArticleListBinding
-import com.example.wikimvvm.model.ArticleAdapter
-import com.example.wikimvvm.model.ArticleResponse
+import com.example.wikimvvm.model.*
 import com.example.wikimvvm.viewmodel.ArticleViewModel
 import com.example.wikimvvm.viewmodel.ViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 
 class ArticleListFragment : Fragment() {
     private var _binding: FragmentArticleListBinding? = null
@@ -48,7 +48,15 @@ class ArticleListFragment : Fragment() {
             listOfArticles = listInViewModel
         }
 
-        articleViewModel.newRandomListOfArticles()
+//        articleViewModel.newRandomListOfArticles()
+        val listOfArticlesForTesting = listOf(
+            ArticleResponse("a1", Thumbnail("a2"), "a3", ContentURLs(Mobile("a4"))),
+            ArticleResponse("b1", Thumbnail("b2"), "b3", ContentURLs(Mobile("b4"))),
+            ArticleResponse("c1", Thumbnail("c2"), "c3", ContentURLs(Mobile("c4"))),
+            ArticleResponse("d1", Thumbnail("d2"), "d3", ContentURLs(Mobile("d4"))),
+            ArticleResponse("e1", Thumbnail("e2"), "e3", ContentURLs(Mobile("e4"))),
+        )
+        adapter.changeList(listOfArticlesForTesting)
 
         binding.randomButton.setOnClickListener {
             articleViewModel.newRandomListOfArticles()

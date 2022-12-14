@@ -41,7 +41,7 @@ class ArticleFragment : Fragment() {
             Glide.with(this).load(it.source).into(binding.ivImage)
         }
 
-        binding.backToMenuButton.setOnClickListener {
+        binding.articleBackToMenuButton.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
 
