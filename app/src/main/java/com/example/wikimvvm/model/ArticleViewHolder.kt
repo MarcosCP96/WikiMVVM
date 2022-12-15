@@ -18,6 +18,6 @@ class ArticleViewHolder(view: View) : ViewHolder(view) {
         articleResponse.thumbnail?.let {
             Glide.with(this.itemView).load(it.source).into(articleImage)
         }
-        articleItem.setOnClickListener { onClick(articleResponse) }
+        article.setOnClickListener { onClick(articleResponse) }
     }
 }

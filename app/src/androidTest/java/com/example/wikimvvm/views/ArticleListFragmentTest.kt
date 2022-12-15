@@ -1,27 +1,38 @@
 package com.example.wikimvvm.views
 
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.junit.Test
-import org.junit.runner.RunWith
-import androidx.test.espresso.Espresso.*
+import androidx.test.core.app.ActivityScenario.ActivityAction
 import androidx.test.espresso.*
-import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.Espresso.*
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.matcher.BoundedMatcher
+import androidx.test.espresso.matcher.RootMatchers.withDecorView
 import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
 import com.example.wikimvvm.R
+import org.hamcrest.Description
+import org.hamcrest.Matcher
+import org.hamcrest.Matchers.`is`
+import org.hamcrest.Matchers.not
+import org.junit.Before
 import org.junit.Rule
-import java.lang.Thread.sleep
+import org.junit.Test
+import org.junit.runner.RunWith
+
 
 @RunWith(AndroidJUnit4::class)
+@LargeTest
 class ArticleListFragmentTest {
 
     @Rule
     @JvmField
-    var activityRule: ActivityTestRule<MainActivity> = ActivityTestRule(MainActivity::class.java)
+    var activityRule: ActivityScenarioRule<MainActivity> = ActivityScenarioRule(MainActivity::class.java)
 
     @Test
     fun addAnArticleToFavourite_goToFavourite_andGoBack() {
@@ -150,13 +161,22 @@ class ArticleListFragmentTest {
     @Test
     fun addArticleToFavouritesThenDeleteFromFavourites() {
         vaciarLista()
-        onView(withText("c1")).check(
-            matches(isDisplayed())
-        ).perform(
+        onView(withText("c1")).perform(
             click()
         )
         onView(withId(R.id.addToFavouriteButton)).perform(
             click()
+        )
+        onView(withText("c1 añadido a favoritos")).inRoot(
+            withDecorView(
+                not(
+                    decorView
+                )
+            )
+        ).check(
+            matches(
+                isDisplayed()
+            )
         )
         onView(withId(R.id.articleBackToMenuButton)).perform(
             click()
@@ -187,7 +207,6 @@ class ArticleListFragmentTest {
         onView(withId(R.id.randomButton)).perform(
             click()
         )
-        sleep(2000)
         onView(withId(R.id.articleList)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
                 9,
@@ -199,12 +218,20 @@ class ArticleListFragmentTest {
     }
 
     @Test
-    fun checkIfArticlesAreDisplayed(){
+    fun checkIfArticlesAreDisplayed() {
         onView(withText("a1")).check(matches(isDisplayed()))
         onView(withText("b1")).check(matches(isDisplayed()))
         onView(withText("c1")).check(matches(isDisplayed()))
         onView(withText("d1")).check(matches(isDisplayed()))
         onView(withText("e1")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun checkArticlesListSize(){
+        onView(withId(R.id.articleList)).check(
+            matches(recyclerViewSizeMatcher(5))
+        )
+
     }
 
     private fun vaciarLista() {
@@ -215,4 +242,25 @@ class ArticleListFragmentTest {
             click()
         )
     }
+
+    private fun recyclerViewSizeMatcher(matcherSize: Int): Matcher<View?> {
+        return object : BoundedMatcher<View?, RecyclerView>(RecyclerView::class.java) {
+            override fun describeTo(description: Description) {
+                description.appendText("with list size: $matcherSize")
+            }
+            override fun matchesSafely(recyclerView: RecyclerView): Boolean {
+                return matcherSize == recyclerView.adapter!!.itemCount
+            }
+        }
+    }
+    private var decorView: View? = null
+
+    @Before
+    fun setUp() {
+        activityRule.scenario.onActivity(ActivityAction<MainActivity> { activity ->
+            decorView = activity.window.decorView
+        })
+    }
 }
+
+
