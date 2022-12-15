@@ -9,21 +9,43 @@ import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.BoundedMatcher
-import androidx.test.espresso.matcher.RootMatchers.withDecorView
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.rule.ActivityTestRule
 import com.example.wikimvvm.R
 import org.hamcrest.Description
 import org.hamcrest.Matcher
-import org.hamcrest.Matchers.`is`
-import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import android.os.IBinder
+import android.view.WindowManager
+import androidx.test.espresso.Root
+import androidx.test.espresso.matcher.RootMatchers
+import androidx.test.espresso.matcher.RootMatchers.isDialog
+import org.hamcrest.TypeSafeMatcher
+import org.junit.Assert.assertEquals
+import java.lang.Thread.sleep
+
+class ToastMatcher: TypeSafeMatcher<Root>() {
+    override fun describeTo(description: Description?) {
+        description?.appendText("is toast")
+    }
+    override fun matchesSafely(item: Root): Boolean {
+        val type: Int = item.windowLayoutParams.get().type
+        if (type == WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY) {
+            val windowToken: IBinder = item.decorView.windowToken
+            val appToken: IBinder = item.decorView.applicationWindowToken
+            if (windowToken === appToken) { // means this window isn't contained by any other windows.
+                return true
+            }
+        }
+        return false
+    }
+}
+
 
 
 @RunWith(AndroidJUnit4::class)
@@ -33,6 +55,13 @@ class ArticleListFragmentTest {
     @Rule
     @JvmField
     var activityRule: ActivityScenarioRule<MainActivity> = ActivityScenarioRule(MainActivity::class.java)
+
+    @Before
+    fun setUp() {
+        activityRule.scenario.onActivity(ActivityAction<MainActivity> { activity ->
+            decorView = activity.window.decorView
+        })
+    }
 
     @Test
     fun addAnArticleToFavourite_goToFavourite_andGoBack() {
@@ -178,6 +207,9 @@ class ArticleListFragmentTest {
 //                isDisplayed()
 //            )
 //        )
+        onView(withText(R.string.toast_string))
+            .inRoot(RootMatchers.withDecorView(isDisplayed()))
+            .check(matches(isDisplayed()))
         onView(withId(R.id.articleBackToMenuButton)).perform(
             click()
         )
@@ -207,6 +239,7 @@ class ArticleListFragmentTest {
         onView(withId(R.id.randomButton)).perform(
             click()
         )
+        sleep(3000)
         onView(withId(R.id.articleList)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
                 9,
@@ -231,7 +264,44 @@ class ArticleListFragmentTest {
         onView(withId(R.id.articleList)).check(
             matches(recyclerViewSizeMatcher(5))
         )
+    }
 
+    @Test
+    fun addArticleToFavourites_deleteItFromFavourites_checkFavouritesAreEmpty(){
+        vaciarLista()
+        onView(withId(R.id.articleList)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                0,
+                click()
+            )
+        )
+        onView(withId(R.id.addToFavouriteButton)).perform(
+            click()
+        )
+        onView(withId(R.id.articleBackToMenuButton)).perform(
+            click()
+        )
+        onView(withId(R.id.toFavourites)).perform(
+            click()
+        )
+        onView(withId(R.id.favouriteArticlesRecyclerView)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                0,
+                click()
+            )
+        )
+        onView(withId(R.id.articleBackToMenuButton)).perform(
+            click()
+        )
+        onView(withId(R.id.emptyListButton)).perform(
+            click()
+        )
+        onView(withId(R.id.toFavourites)).perform(
+            click()
+        )
+        onView(withId(R.id.favouriteArticlesRecyclerView)).check(
+            matches(recyclerViewSizeMatcher(0))
+        )
     }
 
     private fun vaciarLista() {
@@ -254,13 +324,6 @@ class ArticleListFragmentTest {
         }
     }
     private var decorView: View? = null
-
-    @Before
-    fun setUp() {
-        activityRule.scenario.onActivity(ActivityAction<MainActivity> { activity ->
-            decorView = activity.window.decorView
-        })
-    }
 }
 
 

@@ -47,9 +47,9 @@ class ArticleViewModel(context: Context) : ViewModel() {
         }
     }
 
-    fun emptyListOfFavourites(toast: Toast) {
+    fun emptyListOfFavourites() {
         CoroutineScope(Dispatchers.IO).launch {
-            toast.show()
+//            toast.show()
             emptyListOfFavouritesUseCase.emptyListOfFavourites()
         }
     }
