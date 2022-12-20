@@ -25,14 +25,24 @@ import android.view.WindowManager
 import androidx.test.espresso.Root
 import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.RootMatchers.isDialog
+import com.example.wikimvvm.FileReader
+import com.example.wikimvvm.library.OkHttp3IdlingResource
+import com.example.wikimvvm.model.OkHttpProvider
+import okhttp3.OkHttpClient
+import okhttp3.mockwebserver.Dispatcher
+import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import okhttp3.mockwebserver.RecordedRequest
 import org.hamcrest.TypeSafeMatcher
+import org.junit.After
 import org.junit.Assert.assertEquals
 import java.lang.Thread.sleep
 
-class ToastMatcher: TypeSafeMatcher<Root>() {
+class ToastMatcher : TypeSafeMatcher<Root>() {
     override fun describeTo(description: Description?) {
         description?.appendText("is toast")
     }
+
     override fun matchesSafely(item: Root): Boolean {
         val type: Int = item.windowLayoutParams.get().type
         if (type == WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY) {
@@ -46,21 +56,37 @@ class ToastMatcher: TypeSafeMatcher<Root>() {
     }
 }
 
-
-
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class ArticleListFragmentTest {
+    private val mockWebServer = MockWebServer()
+    private lateinit var okHttp3IdlingResource: OkHttp3IdlingResource
 
     @Rule
     @JvmField
-    var activityRule: ActivityScenarioRule<MainActivity> = ActivityScenarioRule(MainActivity::class.java)
+    var activityRule: ActivityScenarioRule<MainActivity> =
+        ActivityScenarioRule(MainActivity::class.java)
 
     @Before
     fun setUp() {
+        okHttp3IdlingResource = OkHttp3IdlingResource.create(
+            "okhttp",
+            OkHttpProvider.instance
+        )
+        IdlingRegistry.getInstance().register(
+            okHttp3IdlingResource
+        )
+        mockWebServer.start(8080)
+        OkHttpProvider.baseUrl = mockWebServer.url("/").toString()
         activityRule.scenario.onActivity(ActivityAction<MainActivity> { activity ->
             decorView = activity.window.decorView
         })
+    }
+
+    @After
+    fun teardown() {
+        mockWebServer.shutdown()
+        IdlingRegistry.getInstance().unregister(okHttp3IdlingResource)
     }
 
     @Test
@@ -252,22 +278,31 @@ class ArticleListFragmentTest {
 
     @Test
     fun checkIfArticlesAreDisplayed() {
+        mockWebServer.dispatcher = object : Dispatcher() {
+            override fun dispatch(request: RecordedRequest): MockResponse {
+                println("demoprueba")
+                return MockResponse()
+                    .setResponseCode(200)
+                    .setBody(FileReader.readStringFromFile("success_response.json"))
+            }
+        }
         onView(withText("a1")).check(matches(isDisplayed()))
-        onView(withText("b1")).check(matches(isDisplayed()))
-        onView(withText("c1")).check(matches(isDisplayed()))
-        onView(withText("d1")).check(matches(isDisplayed()))
-        onView(withText("e1")).check(matches(isDisplayed()))
+//        onView(withText("b1")).check(matches(isDisplayed()))
+//        onView(withText("c1")).check(matches(isDisplayed()))
+//        onView(withText("d1")).check(matches(isDisplayed()))
+//        onView(withText("e1")).check(matches(isDisplayed()))
     }
 
     @Test
-    fun checkArticlesListSize(){
+    fun checkArticlesListSize() {
+        sleep(2000)
         onView(withId(R.id.articleList)).check(
-            matches(recyclerViewSizeMatcher(5))
+            matches(recyclerViewSizeMatcher(10))
         )
     }
 
     @Test
-    fun addArticleToFavourites_deleteItFromFavourites_checkFavouritesAreEmpty(){
+    fun addArticleToFavourites_deleteItFromFavourites_checkFavouritesAreEmpty() {
         vaciarLista()
         onView(withId(R.id.articleList)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
@@ -318,11 +353,13 @@ class ArticleListFragmentTest {
             override fun describeTo(description: Description) {
                 description.appendText("with list size: $matcherSize")
             }
+
             override fun matchesSafely(recyclerView: RecyclerView): Boolean {
                 return matcherSize == recyclerView.adapter!!.itemCount
             }
         }
     }
+
     private var decorView: View? = null
 }
 

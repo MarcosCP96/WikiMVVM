@@ -48,15 +48,7 @@ class ArticleListFragment : Fragment() {
             listOfArticles = listInViewModel
         }
 
-//        articleViewModel.newRandomListOfArticles()
-        val listOfArticlesForTesting = listOf(
-            ArticleResponse("a1", Thumbnail("a2"), "a3", ContentURLs(Mobile("a4"))),
-            ArticleResponse("b1", Thumbnail("b2"), "b3", ContentURLs(Mobile("b4"))),
-            ArticleResponse("c1", Thumbnail("c2"), "c3", ContentURLs(Mobile("c4"))),
-            ArticleResponse("d1", Thumbnail("d2"), "d3", ContentURLs(Mobile("d4"))),
-            ArticleResponse("e1", Thumbnail("e2"), "e3", ContentURLs(Mobile("e4"))),
-        )
-        adapter.changeList(listOfArticlesForTesting)
+        articleViewModel.newRandomListOfArticles()
 
         binding.randomButton.setOnClickListener {
             articleViewModel.newRandomListOfArticles()

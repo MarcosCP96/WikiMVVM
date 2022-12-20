@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.room.Room
 import com.example.wikimvvm.model.ArticleResponse
+import com.example.wikimvvm.model.NetworkRequest
 import com.example.wikimvvm.repository.ArticleDatabase
 import com.example.wikimvvm.repository.ArticleRepository
 import com.example.wikimvvm.useCase.*
@@ -16,7 +17,8 @@ class ArticleViewModel(context: Context) : ViewModel() {
         context,
         ArticleDatabase::class.java, "articlesDB"
     ).fallbackToDestructiveMigration().build()
-    private val articleRepository = ArticleRepository
+    private val networkRequest = NetworkRequest()
+    private val articleRepository = ArticleRepository(networkRequest)
     private val viewModelListOfArticles = mutableListOf<ArticleResponse>()
     private val checkIfArticleInFavouritesUseCase = CheckIfArticleInFavouritesUseCase(db.articleDao())
     private val emptyListOfFavouritesUseCase = EmptyListOfFavouritesUseCase(db.articleDao())
