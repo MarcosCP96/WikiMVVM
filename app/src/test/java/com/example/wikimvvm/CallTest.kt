@@ -1,6 +1,5 @@
 package com.example.wikimvvm
 
-import com.example.wikimvvm.daos.APIService
 import com.example.wikimvvm.model.*
 import com.example.wikimvvm.repository.ArticleRepository
 import com.google.gson.Gson
@@ -17,7 +16,6 @@ import org.junit.jupiter.api.Test
 @ExperimentalCoroutinesApi
 class CallTest {
     private val mockWebServer = MockWebServer()
-    private lateinit var apiService: APIService
     private val retrofit = Retrofit.Builder()
         .baseUrl(mockWebServer.url("/"))
         .addConverterFactory(GsonConverterFactory.create())

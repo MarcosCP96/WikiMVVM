@@ -2,7 +2,6 @@ package com.example.wikimvvm.views
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.core.app.ActivityScenario.ActivityAction
 import androidx.test.espresso.*
 import androidx.test.espresso.Espresso.*
 import androidx.test.espresso.action.ViewActions.*
@@ -20,22 +19,15 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import android.os.IBinder
-import android.view.WindowManager
-import androidx.test.espresso.Root
 import androidx.test.espresso.matcher.RootMatchers
-import androidx.test.espresso.matcher.RootMatchers.isDialog
 import com.example.wikimvvm.FileReader
 import com.example.wikimvvm.library.OkHttp3IdlingResource
 import com.example.wikimvvm.model.OkHttpProvider
-import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
-import org.hamcrest.TypeSafeMatcher
 import org.junit.After
-import org.junit.Assert.assertEquals
 import java.lang.Thread.sleep
 
 @RunWith(AndroidJUnit4::class)
@@ -90,9 +82,9 @@ class ArticleListFragmentTest {
         println(OkHttpProvider.baseUrl)
         OkHttpProvider.baseUrl = mockWebServer.url("/").toString()
         println(OkHttpProvider.baseUrl)
-        activityRule.scenario.onActivity(ActivityAction<MainActivity> { activity ->
+        activityRule.scenario.onActivity { activity ->
             decorView = activity.window.decorView
-        })
+        }
     }
 
     @After

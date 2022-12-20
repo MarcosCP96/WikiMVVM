@@ -13,7 +13,6 @@ import com.example.wikimvvm.databinding.FragmentArticleListBinding
 import com.example.wikimvvm.model.*
 import com.example.wikimvvm.viewmodel.ArticleViewModel
 import com.example.wikimvvm.viewmodel.ViewModelFactory
-import com.google.android.material.snackbar.Snackbar
 
 class ArticleListFragment : Fragment() {
     private var _binding: FragmentArticleListBinding? = null

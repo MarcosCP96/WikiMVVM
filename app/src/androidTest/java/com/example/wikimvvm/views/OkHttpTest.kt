@@ -1,45 +1,23 @@
 package com.example.wikimvvm.views
 
-import android.view.View
-import androidx.recyclerview.widget.RecyclerView
-import androidx.test.core.app.ActivityScenario.ActivityAction
 import androidx.test.espresso.*
 import androidx.test.espresso.Espresso.*
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import com.example.wikimvvm.R
-import org.hamcrest.Description
-import org.hamcrest.Matcher
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import android.os.IBinder
-import android.view.WindowManager
 import androidx.test.core.app.ActivityScenario
-import androidx.test.espresso.Root
-import androidx.test.espresso.matcher.RootMatchers
-import androidx.test.espresso.matcher.RootMatchers.isDialog
-import com.example.wikimvvm.FileReader
 import com.example.wikimvvm.library.OkHttp3IdlingResource
 import com.example.wikimvvm.model.OkHttpProvider
-import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
-import org.hamcrest.TypeSafeMatcher
 import org.junit.After
-import org.junit.Assert.assertEquals
-import org.junit.rules.TestRule
-import java.lang.Thread.sleep
-import java.sql.Statement
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
