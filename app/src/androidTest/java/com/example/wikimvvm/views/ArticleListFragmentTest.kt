@@ -38,29 +38,13 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import java.lang.Thread.sleep
 
-class ToastMatcher : TypeSafeMatcher<Root>() {
-    override fun describeTo(description: Description?) {
-        description?.appendText("is toast")
-    }
-
-    override fun matchesSafely(item: Root): Boolean {
-        val type: Int = item.windowLayoutParams.get().type
-        if (type == WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY) {
-            val windowToken: IBinder = item.decorView.windowToken
-            val appToken: IBinder = item.decorView.applicationWindowToken
-            if (windowToken === appToken) { // means this window isn't contained by any other windows.
-                return true
-            }
-        }
-        return false
-    }
-}
-
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class ArticleListFragmentTest {
-    private val mockWebServer = MockWebServer()
+    private var mockWebServer = MockWebServer()
     private lateinit var okHttp3IdlingResource: OkHttp3IdlingResource
+    private val abc = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j")
+    private var indexRequest = 0
 
     @Rule
     @JvmField
@@ -76,8 +60,36 @@ class ArticleListFragmentTest {
         IdlingRegistry.getInstance().register(
             okHttp3IdlingResource
         )
+        mockWebServer.dispatcher = object : Dispatcher() {
+            override fun dispatch(request: RecordedRequest): MockResponse {
+                indexRequest++
+                val letra = abc[indexRequest % 10]
+                println("request.sequenceNumber ${indexRequest % 10} -> ${request.path}")
+                return when (request.path) {
+                    "/api/rest_v1/page/random/summary" ->
+                        MockResponse().setBody(
+                            "{\"title\":\"${letra}1\",\"thumbnail\":{\"source\":\"${letra}2\"}," + "\"extract\":\"${letra}3\"," + "\"content_urls\":{\"mobile\":{\"page\":\"${letra}4\"}}}"
+                        ).setResponseCode(200)
+                    else ->
+                        MockResponse().setBody(
+                            "{\"title\":\"${letra}1\",\"thumbnail\":{\"source\":\"${letra}2\"}," + "\"extract\":\"${letra}3\"," + "\"content_urls\":{\"mobile\":{\"page\":\"${letra}4\"}}}"
+                        ).setResponseCode(200)
+                }
+
+            }
+        }
+
         mockWebServer.start(8080)
+        mockWebServer.dispatcher = object : Dispatcher() {
+            override fun dispatch(request: RecordedRequest): MockResponse {
+                return MockResponse()
+                    .setResponseCode(200)
+                    .setBody(FileReader.readStringFromFile("success_response.json"))
+            }
+        }
+        println(OkHttpProvider.baseUrl)
         OkHttpProvider.baseUrl = mockWebServer.url("/").toString()
+        println(OkHttpProvider.baseUrl)
         activityRule.scenario.onActivity(ActivityAction<MainActivity> { activity ->
             decorView = activity.window.decorView
         })
@@ -87,6 +99,22 @@ class ArticleListFragmentTest {
     fun teardown() {
         mockWebServer.shutdown()
         IdlingRegistry.getInstance().unregister(okHttp3IdlingResource)
+    }
+
+    @Test
+    fun checkIfArticlesAreDisplayed() {
+//        mockWebServer.dispatcher = object : Dispatcher() {
+//            override fun dispatch(request: RecordedRequest): MockResponse {
+//                return MockResponse()
+//                    .setResponseCode(200)
+//                    .setBody(FileReader.readStringFromFile("success_response.json"))
+//            }
+//        }
+        onView(withText("a1")).check(matches(isDisplayed()))
+//        onView(withText("b1")).check(matches(isDisplayed()))
+//        onView(withText("c1")).check(matches(isDisplayed()))
+//        onView(withText("d1")).check(matches(isDisplayed()))
+//        onView(withText("e1")).check(matches(isDisplayed()))
     }
 
     @Test
@@ -276,22 +304,7 @@ class ArticleListFragmentTest {
         onView(withId(R.id.tvExtract)).check(matches(isDisplayed()))
     }
 
-    @Test
-    fun checkIfArticlesAreDisplayed() {
-        mockWebServer.dispatcher = object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse {
-                println("demoprueba")
-                return MockResponse()
-                    .setResponseCode(200)
-                    .setBody(FileReader.readStringFromFile("success_response.json"))
-            }
-        }
-        onView(withText("a1")).check(matches(isDisplayed()))
-//        onView(withText("b1")).check(matches(isDisplayed()))
-//        onView(withText("c1")).check(matches(isDisplayed()))
-//        onView(withText("d1")).check(matches(isDisplayed()))
-//        onView(withText("e1")).check(matches(isDisplayed()))
-    }
+
 
     @Test
     fun checkArticlesListSize() {
