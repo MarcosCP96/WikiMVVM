@@ -70,8 +70,8 @@ class FavouriteArticlesFragment : Fragment() {
         }
 
         binding.emptyListButton.setOnClickListener {
-//            val toast = Toast.makeText(requireContext(), "Lista vaciada", Toast.LENGTH_SHORT)
-            articleViewModel.emptyListOfFavourites()
+            val toast = Toast.makeText(requireContext(), "Lista vaciada", Toast.LENGTH_SHORT)
+            articleViewModel.emptyListOfFavourites(toast)
             parentFragmentManager.popBackStack()
         }
     }

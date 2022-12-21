@@ -1,5 +1,6 @@
 package com.example.wikimvvm.views
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -24,6 +25,7 @@ class WebFragment : Fragment() {
         return view
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.getSerializable("articulo").let {
@@ -31,6 +33,7 @@ class WebFragment : Fragment() {
         }
         val webview = view.findViewById<WebView>(R.id.webview)
         webview.webViewClient = object : WebViewClient() {
+            @Deprecated("Deprecated in Java")
             override fun shouldOverrideUrlLoading(
                 view: WebView,
                 url: String

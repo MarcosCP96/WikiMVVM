@@ -1,7 +1,5 @@
 package com.example.wikimvvm.views
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,9 +14,6 @@ import com.example.wikimvvm.databinding.FragmentArticleBinding
 import com.example.wikimvvm.model.*
 import com.example.wikimvvm.viewmodel.ArticleViewModel
 import com.example.wikimvvm.viewmodel.ViewModelFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class ArticleFragment : Fragment() {
     private var _binding: FragmentArticleBinding? = null
@@ -51,18 +46,17 @@ class ArticleFragment : Fragment() {
         }
 
         binding.addToFavouriteButton.setOnClickListener {
-            articleViewModel.addArticleToFavourite(articleSent)
+            val toast = Toast.makeText(requireContext(), "${articleSent.title} añadido a favoritos", Toast.LENGTH_SHORT)
+            articleViewModel.addArticleToFavourite(toast, articleSent)
         }
 
         binding.deleteButton.setOnClickListener {
-            articleViewModel.deleteArticleFromFavourites(articleSent)
+            val toast = Toast.makeText(requireContext(), "${articleSent.title} borrado de favoritos", Toast.LENGTH_SHORT)
+            articleViewModel.deleteArticleFromFavourites(toast, articleSent)
             parentFragmentManager.popBackStack()
         }
 
         binding.toUrlButton.setOnClickListener {
-//            val openURL = Intent(Intent.ACTION_VIEW)
-//            openURL.data = Uri.parse(articleSent.content_urls.mobile.page)
-//            startActivity(openURL)
             val fragment = WebFragment().apply {
                 arguments = Bundle().apply { putSerializable("articulo", articleSent) }
             }
