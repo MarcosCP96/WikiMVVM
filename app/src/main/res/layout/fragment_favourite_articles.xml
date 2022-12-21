@@ -25,7 +25,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/backToMenuButton"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:background="@drawable/my_button_bg"
@@ -36,11 +36,11 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/emptyListButton"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:background="@drawable/my_button_bg"
-        app:layout_constraintTop_toBottomOf="@id/favouriteArticlesRecyclerView"
+        app:layout_constraintTop_toBottomOf="@id/backToMenuButton"
         app:layout_constraintStart_toEndOf="@id/backToMenuButton"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="Empty List" />

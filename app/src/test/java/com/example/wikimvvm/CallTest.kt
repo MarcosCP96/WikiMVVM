@@ -45,8 +45,6 @@ class CallTest {
             val response = articleRepository.getRandomArticle()
             assertEquals(mockArticle, response)
         }
-            println(Gson().toJson(mockArticle))
-
     }
 
     @Test

@@ -37,14 +37,18 @@ class ArticleViewModel(context: Context) : ViewModel() {
         }
     }
 
-    fun addArticleToFavourite(toast: Toast, articleResponse: ArticleResponse){
+    fun isArticleInFavourites(articleResponse: ArticleResponse): Boolean{
+        return checkIfArticleInFavouritesUseCase.checkIfArticleInFavourite(articleResponse)
+    }
+
+    fun addArticleToFavourite(articleResponse: ArticleResponse){
         CoroutineScope(Dispatchers.IO).launch {
             if (checkIfArticleInFavouritesUseCase.checkIfArticleInFavourite(articleResponse)) {
                 insertFavouriteArticleUseCase.insertFavouriteArticle(articleResponse)
-                toast.show()
+//                toast.show()
             } else {
-                toast.setText("${articleResponse.title} ya está en favoritos")
-                toast.show()
+//                toast.setText("${articleResponse.title} ya está en favoritos")
+//                toast.show()
             }
         }
     }
@@ -56,14 +60,10 @@ class ArticleViewModel(context: Context) : ViewModel() {
         }
     }
 
-    fun deleteArticleFromFavourites(toast: Toast,articleToDelete: ArticleResponse) {
+    fun deleteArticleFromFavourites(articleToDelete: ArticleResponse) {
         CoroutineScope(Dispatchers.IO).launch {
             if (!checkIfArticleInFavouritesUseCase.checkIfArticleInFavourite(articleToDelete)){
-                toast.show()
                 deleteArticleFromFavouritesUseCase.deleteArticleFromFavourites(articleToDelete)
-            } else {
-                toast.setText("${articleToDelete.title} no está en favoritos")
-                toast.show()
             }
         }
     }

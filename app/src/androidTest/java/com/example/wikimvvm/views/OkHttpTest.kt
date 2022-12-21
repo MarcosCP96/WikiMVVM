@@ -54,14 +54,8 @@ class OkHttpTest {
         }
 
         mockWebServer.start(8080)
-        println(OkHttpProvider.baseUrl)
         OkHttpProvider.baseUrl = mockWebServer.url("/").toString()
-        println(OkHttpProvider.baseUrl)
         ActivityScenario.launch(MainActivity::class.java)
-
-//        activityRule.scenario.onActivity(ActivityAction<MainActivity> { activity ->
-//            decorView = activity.window.decorView
-//        })
     }
 
     @After
@@ -72,13 +66,6 @@ class OkHttpTest {
 
     @Test
     fun checkIfArticlesAreDisplayed() {
-//        mockWebServer.dispatcher = object : Dispatcher() {
-//            override fun dispatch(request: RecordedRequest): MockResponse {
-//                return MockResponse()
-//                    .setResponseCode(200)
-//                    .setBody(FileReader.readStringFromFile("success_response.json"))
-//            }
-//        }
         onView(withText("a1")).check(matches(isDisplayed()))
 //        onView(withText("b1")).check(matches(isDisplayed()))
 //        onView(withText("c1")).check(matches(isDisplayed()))

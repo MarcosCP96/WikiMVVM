@@ -7,17 +7,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".views.ArticleListFragment">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/toFavourites"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:textColor="@color/black"
-        android:background="@drawable/my_button_bg"
-        android:text="saved articles"
-        app:layout_constraintStart_toEndOf="@id/randomButton"
-        app:layout_constraintTop_toBottomOf="@id/articleList" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/articleList"
         android:layout_width="match_parent"
@@ -26,8 +15,19 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/toFavourites"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:textColor="@color/black"
+        android:background="@drawable/my_button_bg"
+        android:text="saved articles"
+        app:layout_constraintStart_toEndOf="@id/randomButton"
+        app:layout_constraintTop_toBottomOf="@id/articleList" />
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/randomButton"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:background="@drawable/my_button_bg"

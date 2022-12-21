@@ -20,7 +20,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import androidx.test.espresso.matcher.RootMatchers
-import com.example.wikimvvm.FileReader
 import com.example.wikimvvm.library.OkHttp3IdlingResource
 import com.example.wikimvvm.model.OkHttpProvider
 import okhttp3.mockwebserver.Dispatcher
@@ -72,16 +71,7 @@ class ArticleListFragmentTest {
         }
 
         mockWebServer.start(8080)
-        mockWebServer.dispatcher = object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse {
-                return MockResponse()
-                    .setResponseCode(200)
-                    .setBody(FileReader.readStringFromFile("success_response.json"))
-            }
-        }
-        println(OkHttpProvider.baseUrl)
         OkHttpProvider.baseUrl = mockWebServer.url("/").toString()
-        println(OkHttpProvider.baseUrl)
         activityRule.scenario.onActivity { activity ->
             decorView = activity.window.decorView
         }
@@ -95,18 +85,7 @@ class ArticleListFragmentTest {
 
     @Test
     fun checkIfArticlesAreDisplayed() {
-//        mockWebServer.dispatcher = object : Dispatcher() {
-//            override fun dispatch(request: RecordedRequest): MockResponse {
-//                return MockResponse()
-//                    .setResponseCode(200)
-//                    .setBody(FileReader.readStringFromFile("success_response.json"))
-//            }
-//        }
         onView(withText("a1")).check(matches(isDisplayed()))
-//        onView(withText("b1")).check(matches(isDisplayed()))
-//        onView(withText("c1")).check(matches(isDisplayed()))
-//        onView(withText("d1")).check(matches(isDisplayed()))
-//        onView(withText("e1")).check(matches(isDisplayed()))
     }
 
     @Test

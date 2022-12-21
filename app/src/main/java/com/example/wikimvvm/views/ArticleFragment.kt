@@ -8,12 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
+import com.example.wikimvvm.R
 import com.example.wikimvvm.databinding.FragmentArticleBinding
 import com.example.wikimvvm.model.*
 import com.example.wikimvvm.viewmodel.ArticleViewModel
 import com.example.wikimvvm.viewmodel.ViewModelFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ArticleFragment : Fragment() {
     private var _binding: FragmentArticleBinding? = null
@@ -46,20 +51,28 @@ class ArticleFragment : Fragment() {
         }
 
         binding.addToFavouriteButton.setOnClickListener {
-            val toast = Toast.makeText(requireContext(), "${articleSent.title} añadido a favoritos", Toast.LENGTH_SHORT)
-            articleViewModel.addArticleToFavourite(toast, articleSent)
+            articleViewModel.addArticleToFavourite(articleSent)
         }
 
         binding.deleteButton.setOnClickListener {
-            val toast = Toast.makeText(requireContext(), "${articleSent.title} borrado de favoritos", Toast.LENGTH_SHORT)
-            articleViewModel.deleteArticleFromFavourites(toast, articleSent)
+            articleViewModel.deleteArticleFromFavourites(articleSent)
             parentFragmentManager.popBackStack()
         }
 
         binding.toUrlButton.setOnClickListener {
-            val openURL = Intent(Intent.ACTION_VIEW)
-            openURL.data = Uri.parse(articleSent.content_urls.mobile.page)
-            startActivity(openURL)
+//            val openURL = Intent(Intent.ACTION_VIEW)
+//            openURL.data = Uri.parse(articleSent.content_urls.mobile.page)
+//            startActivity(openURL)
+            val fragment = WebFragment().apply {
+                arguments = Bundle().apply { putSerializable("articulo", articleSent) }
+            }
+            val toWikipedia = parentFragmentManager.beginTransaction()
+            toWikipedia.add(
+                R.id.placeholder,
+                fragment
+            ).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .addToBackStack(null)
+                .commit()
         }
     }
 }
